@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KC Public Health — Kansas City Health Data & Resources</title>
+  <meta name="description" content="Independent public health data, COVID-19 updates, and research-backed analysis for Kansas City, Missouri.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #faf7f2;
+      --bg-soft: #f3eee6;
+      --surface: #ffffff;
+      --ink: #1a1f2e;
+      --ink-soft: #4a5468;
+      --ink-muted: #7a8599;
+      --line: #e8e2d7;
+      --accent: #c2410c;
+      --accent-hover: #9a3412;
+      --accent-soft: #fef3ec;
+      
+      /* Section accents - deliberate, semantic */
+      --covid-bg: #fef2ec;
+      --covid-accent: #b91c1c;
+      --covid-text: #7f1d1d;
+      
+      --behaviors-bg: #f0f7f4;
+      --behaviors-accent: #0f766e;
+      --behaviors-text: #134e4a;
+      
+      --sdoh-bg: #f0f4fa;
+      --sdoh-accent: #1e40af;
+      --sdoh-text: #1e3a8a;
+      
+      --music-bg: #1a1f2e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    .serif {
+      font-family: 'Fraunces', Georgia, serif;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.875rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .brand .tagline {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      margin-top: 0.375rem;
+      letter-spacing: 0.02em;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-soft);
+      border-color: var(--line);
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-soft);
+      color: var(--ink);
+      border-color: var(--ink-muted);
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+
+    .btn-primary:hover {
+      background: #000;
+    }
+
+    .btn-disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-disabled:hover {
+      background: var(--ink);
+    }
+
+    /* LOCATION FILTER */
+    .location-filter {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .location-filter-label {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .location-filter select {
+      padding: 0.4rem 2rem 0.4rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      font-weight: 500;
+      font-size: 0.875rem;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%237a8599' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+    }
+
+    .location-filter select:hover {
+      border-color: var(--ink-muted);
+    }
+
+    .location-filter .region {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .intro {
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    .intro h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .intro p {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    /* SECTION CARDS */
+    .sections {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .section:hover {
+      border-color: var(--ink-muted);
+    }
+
+    .section.expanded {
+      border-color: var(--ink-muted);
+    }
+
+    .section-trigger {
+      width: 100%;
+      padding: 1.5rem 1.75rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.25rem;
+      align-items: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+
+    .section-trigger:hover {
+      background: var(--bg-soft);
+    }
+
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-icon.covid {
+      background: var(--covid-bg);
+      color: var(--covid-accent);
+    }
+
+    .section-icon.behaviors {
+      background: var(--behaviors-bg);
+      color: var(--behaviors-accent);
+    }
+
+    .section-icon.sdoh {
+      background: var(--sdoh-bg);
+      color: var(--sdoh-accent);
+    }
+
+    .section-icon.music {
+      background: var(--bg-soft);
+      color: var(--ink);
+    }
+
+    .section-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .section-text h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+
+    .section-text p {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .section-chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--ink-muted);
+      transition: transform 0.25s ease;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .section-chevron.rotated {
+      transform: rotate(180deg);
+    }
+
+    /* SECTION CONTENT */
+    .section-content {
+      padding: 0 1.75rem 1.75rem;
+      border-top: 1px solid var(--line);
+      margin-top: -1px;
+      padding-top: 1.75rem;
+    }
+
+    .section-content.covid {
+      background: linear-gradient(to bottom, var(--covid-bg), transparent 60%);
+    }
+
+    .section-content.behaviors {
+      background: linear-gradient(to bottom, var(--behaviors-bg), transparent 60%);
+    }
+
+    .section-content.sdoh {
+      background: linear-gradient(to bottom, var(--sdoh-bg), transparent 60%);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+    }
+
+    .empty-state-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-bottom: 0.375rem;
+    }
+
+    .empty-state-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      max-width: 340px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* MUSIC SECTION - distinctive dark treatment */
+    .music-section {
+      background: var(--music-bg);
+      color: var(--surface);
+      border-radius: 12px;
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+
+    .music-section .section-trigger {
+      color: var(--surface);
+    }
+
+    .music-section .section-trigger:hover {
+      background: rgba(255,255,255,0.04);
+    }
+
+    .music-section .section-text h3 {
+      color: var(--surface);
+    }
+
+    .music-section .section-text p {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .music-section .section-icon.music {
+      background: rgba(255,255,255,0.08);
+      color: #f97316;
+    }
+
+    .music-section .section-chevron {
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 31, 46, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 12px;
+      max-width: 460px;
+      width: 100%;
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .modal h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .modal .subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      background: var(--surface);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--ink);
+    }
+
+    .form-group textarea {
+      resize: none;
+      min-height: 100px;
+      line-height: 1.5;
+    }
+
+    .privacy-note {
+      background: var(--bg-soft);
+      border-radius: 6px;
+      padding: 0.75rem 0.875rem;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 0.625rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-family: inherit;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .btn-submit {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+
+    .btn-submit:hover {
+      background: #000;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: var(--ink-soft);
+      border-color: var(--line);
+    }
+
+    .btn-cancel:hover {
+      background: var(--bg-soft);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* ABOUT SECTION */
+    .about {
+      max-width: 1120px;
+      margin: 4rem auto 0;
+      padding: 0 2rem;
+    }
+
+    .about-inner {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 2rem 2.25rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .about-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-soft);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .about-content h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.125rem;
+    }
+
+    .about-content .credentials {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.875rem;
+    }
+
+    .about-content p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 640px) {
+      .header-inner, .main, .footer, .about { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .main { padding-top: 2rem; }
+      .section-trigger { padding: 1.25rem; grid-template-columns: auto 1fr auto; gap: 0.875rem; }
+      .section-icon { width: 38px; height: 38px; }
+      .section-icon svg { width: 18px; height: 18px; }
+      .section-text h3 { font-size: 1.0625rem; }
+      .intro h2 { font-size: 1.625rem; }
+      .brand h1 { font-size: 1.5rem; }
+      .about-inner { padding: 1.5rem 1.5rem; grid-template-columns: 1fr; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    const { useState } = React;
+
+    const App = () => {
+      const [expandedSection, setExpandedSection] = useState(null);
+      const [selectedLocation, setSelectedLocation] = useState('kc-metro');
+      const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+      const [feedbackForm, setFeedbackForm] = useState({ name: '', email: '', message: '', category: 'suggestion' });
+
+      const locations = {
+        'kc-metro': { name: 'Kansas City Metro', region: 'Jackson County, MO & surrounding counties' },
+        'jackson-county': { name: 'Jackson County', region: 'Jackson County, Missouri' },
+        'missouri': { name: 'Missouri', region: 'State of Missouri' }
+      };
+
+      const currentData = locations[selectedLocation];
+
+      const handleFeedbackSubmit = function(e) {
+        e.preventDefault();
+        alert('Thank you for your feedback. We will review your ' + feedbackForm.category + '.');
+        setFeedbackForm({ name: '', email: '', message: '', category: 'suggestion' });
+        setShowFeedbackModal(false);
+      };
+
+      const handleFeedbackChange = function(e) {
+        const { name, value } = e.target;
+        setFeedbackForm(function(prev) {
+          return Object.assign({}, prev, { [name]: value });
+        });
+      };
+
+      const toggleSection = function(id) {
+        setExpandedSection(expandedSection === id ? null : id);
+      };
+
+      // SVG icon components
+      const VirusIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('circle', { cx: '12', cy: '12', r: '5' }),
+        React.createElement('path', { d: 'M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4' })
+      );
+
+      const ActivityIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M22 12h-4l-3 9L9 3l-3 9H2' })
+      );
+
+      const UsersIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }),
+        React.createElement('circle', { cx: '9', cy: '7', r: '4' }),
+        React.createElement('path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75' })
+      );
+
+      const MusicIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M9 18V5l12-2v13' }),
+        React.createElement('circle', { cx: '6', cy: '18', r: '3' }),
+        React.createElement('circle', { cx: '18', cy: '16', r: '3' })
+      );
+
+      const ChevronIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M6 9l6 6 6-6' })
+      );
+
+      const renderSection = function(id, config) {
+        const isExpanded = expandedSection === id;
+        const isMusic = id === 'music';
+        
+        return React.createElement('div', { 
+          className: 'section' + (isExpanded ? ' expanded' : '') + (isMusic ? ' music-section' : '')
+        },
+          React.createElement('button', {
+            onClick: function() { toggleSection(id); },
+            className: 'section-trigger'
+          },
+            React.createElement('div', { className: 'section-icon ' + id }, config.icon),
+            React.createElement('div', { className: 'section-text' },
+              React.createElement('h3', null, config.title),
+              React.createElement('p', null, config.subtitle)
+            ),
+            React.createElement('svg', {
+              className: 'section-chevron' + (isExpanded ? ' rotated' : ''),
+              viewBox: '0 0 24 24'
+            }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
+          ),
+          isExpanded && React.createElement('div', { className: 'section-content ' + id },
+            React.createElement('div', { className: 'empty-state' },
+              React.createElement('div', { className: 'empty-state-title' }, config.emptyTitle),
+              React.createElement('div', { className: 'empty-state-desc' }, config.emptyDesc)
+            )
+          )
+        );
+      };
+
+      return React.createElement(React.Fragment, null,
+        // Modal
+        showFeedbackModal && React.createElement('div', { className: 'modal-backdrop' },
+          React.createElement('div', { className: 'modal' },
+            React.createElement('h3', null, 'Share your feedback'),
+            React.createElement('p', { className: 'subtitle' }, 'Help us improve this resource. All submissions are private and reviewed directly by our team.'),
+            React.createElement('form', { onSubmit: handleFeedbackSubmit },
+              React.createElement('div', { className: 'form-group' },
+                React.createElement('label', null, 'Name'),
+                React.createElement('input', { 
+                  type: 'text', name: 'name', value: feedbackForm.name, 
+                  onChange: handleFeedbackChange, placeholder: 'Your name (optional)' 
+                })
+              ),
+              React.createElement('div', { className: 'form-group' },
+                React.createElement('label', null, 'Email'),
+                React.createElement('input', { 
+                  type: 'email', name: 'email', value: feedbackForm.email, 
+                  onChange: handleFeedbackChange, required: true, placeholder: 'your@email.com' 
+                })
+              ),
+              React.createElement('div', { className: 'form-group' },
+                React.createElement('label', null, 'Category'),
+                React.createElement('select', { 
+                  name: 'category', value: feedbackForm.category, onChange: handleFeedbackChange 
+                },
+                  React.createElement('option', { value: 'suggestion' }, 'Suggestion'),
+                  React.createElement('option', { value: 'bug' }, 'Report a bug'),
+                  React.createElement('option', { value: 'data' }, 'Data issue'),
+                  React.createElement('option', { value: 'topic' }, 'Topic request'),
+                  React.createElement('option', { value: 'other' }, 'Other')
+                )
+              ),
+              React.createElement('div', { className: 'form-group' },
+                React.createElement('label', null, 'Message'),
+                React.createElement('textarea', { 
+                  name: 'message', value: feedbackForm.message, 
+                  onChange: handleFeedbackChange, required: true, 
+                  placeholder: 'Tell us what you think...' 
+                })
+              ),
+              React.createElement('div', { className: 'privacy-note' },
+                'Your feedback is private and will only be reviewed by the KC Public Health team.'
+              ),
+              React.createElement('div', { className: 'modal-buttons' },
+                React.createElement('button', { type: 'submit', className: 'btn-submit' }, 'Send feedback'),
+                React.createElement('button', { 
+                  type: 'button', 
+                  onClick: function() { setShowFeedbackModal(false); }, 
+                  className: 'btn-cancel' 
+                }, 'Cancel')
+              )
+            )
+          )
+        ),
+        
+        // Header
+        React.createElement('header', { className: 'header' },
+          React.createElement('div', { className: 'header-inner' },
+            React.createElement('div', { className: 'header-top' },
+              React.createElement('div', { className: 'brand' },
+                React.createElement('h1', null, 'KC Public Health'),
+                React.createElement('div', { className: 'tagline' }, 'Data · Analysis · Community')
+              ),
+              React.createElement('div', { className: 'header-buttons' },
+                React.createElement('button', { 
+                  onClick: function() { setShowFeedbackModal(true); }, 
+                  className: 'btn btn-ghost' 
+                }, 'Feedback'),
+                React.createElement('button', { 
+                  className: 'btn btn-primary btn-disabled', 
+                  disabled: true 
+                }, 'Blog — coming soon')
+              )
+            ),
+            React.createElement('div', { className: 'location-filter' },
+              React.createElement('span', { className: 'location-filter-label' }, 'Viewing'),
+              React.createElement('select', { 
+                value: selectedLocation, 
+                onChange: function(e) { setSelectedLocation(e.target.value); } 
+              },
+                React.createElement('option', { value: 'kc-metro' }, 'Kansas City Metro'),
+                React.createElement('option', { value: 'jackson-county' }, 'Jackson County'),
+                React.createElement('option', { value: 'missouri' }, 'Missouri')
+              ),
+              React.createElement('span', { className: 'region' }, currentData.region)
+            )
+          )
+        ),
+        
+        // Main content
+        React.createElement('div', { className: 'main' },
+          React.createElement('div', { className: 'intro' },
+            React.createElement('h2', null, 'Honest public health data, centered on Kansas City.'),
+            React.createElement('p', null, 'An independent resource tracking COVID-19, health behaviors, and the structural factors shaping health outcomes in our community. Updated biweekly.')
+          ),
+          
+          React.createElement('div', { className: 'sections' },
+            renderSection('covid', {
+              title: 'COVID-19 — an ongoing pandemic',
+              subtitle: 'Current transmission, long COVID, and what you need to know',
+              icon: VirusIcon,
+              emptyTitle: 'Data being prepared',
+              emptyDesc: 'Current COVID-19 metrics for the selected location will appear here once data is gathered.'
+            }),
+            renderSection('behaviors', {
+              title: 'Health behaviors',
+              subtitle: 'Physical activity, smoking, obesity, mental health',
+              icon: ActivityIcon,
+              emptyTitle: 'Data being prepared',
+              emptyDesc: 'Behavioral health indicators will appear here once data is gathered.'
+            }),
+            renderSection('sdoh', {
+              title: 'Social determinants of health',
+              subtitle: 'The structural factors shaping community health',
+              icon: UsersIcon,
+              emptyTitle: 'Data being prepared',
+              emptyDesc: 'Poverty, housing, food security, education, and insurance metrics will appear here once data is gathered.'
+            }),
+            renderSection('music', {
+              title: 'Featured KC artists',
+              subtitle: 'A rotating playlist of local musicians',
+              icon: MusicIcon,
+              emptyTitle: 'Playlist being curated',
+              emptyDesc: 'Featured Kansas City artists and streaming links will appear here soon.'
+            })
+          )
+        ),
+        
+        // About section
+        React.createElement('div', { className: 'about' },
+          React.createElement('div', { className: 'about-inner' },
+            React.createElement('div', { className: 'about-avatar' }, 'BL'),
+            React.createElement('div', { className: 'about-content' },
+              React.createElement('h3', null, 'Benjamin Leifer'),
+              React.createElement('div', { className: 'credentials' }, 'MA · MPH')
+            )
+          )
+        ),
+        
+        // Footer
+        React.createElement('footer', { className: 'footer' },
+          React.createElement('div', { className: 'footer-inner' },
+            React.createElement('p', null, 
+              'An independent public health resource for Kansas City. ',
+              'This site provides general health information — for medical advice, consult a healthcare provider.'
+            )
+          )
+        )
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  </script>
+</body>
+</html>
