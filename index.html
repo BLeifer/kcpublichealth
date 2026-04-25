@@ -21,29 +21,31 @@
     }
 
     :root {
-      --bg: #faf7f2;
-      --bg-soft: #f3eee6;
-      --surface: #ffffff;
+      --bg: #d8dde8;
+      --bg-soft: #c8cee0;
+      --surface: #f4f5f9;
+      --surface-pure: #ffffff;
       --ink: #1a1f2e;
-      --ink-soft: #4a5468;
-      --ink-muted: #7a8599;
-      --line: #e8e2d7;
-      --accent: #c2410c;
-      --accent-hover: #9a3412;
-      --accent-soft: #fef3ec;
+      --ink-soft: #4a5070;
+      --ink-muted: #6b7090;
+      --line: #c4ccd9;
+      --line-soft: #d4dae5;
+      --accent: #2d3656;
+      --accent-hover: #1a2240;
+      --accent-soft: #e0e4f0;
       
-      /* Section accents - deliberate, semantic */
-      --covid-bg: #fef2ec;
-      --covid-accent: #b91c1c;
-      --covid-text: #7f1d1d;
+      /* Section accents - Cool Dusk palette */
+      --covid-bg: #e6d4e8;
+      --covid-accent: #6b2d6b;
+      --covid-text: #4a1f4a;
       
-      --behaviors-bg: #f0f7f4;
-      --behaviors-accent: #0f766e;
-      --behaviors-text: #134e4a;
+      --behaviors-bg: #d0e8e2;
+      --behaviors-accent: #0d6e6e;
+      --behaviors-text: #094545;
       
-      --sdoh-bg: #f0f4fa;
-      --sdoh-accent: #1e40af;
-      --sdoh-text: #1e3a8a;
+      --sdoh-bg: #d4d8ee;
+      --sdoh-accent: #2d3656;
+      --sdoh-text: #1a2240;
       
       --music-bg: #1a1f2e;
     }
@@ -63,7 +65,7 @@
 
     /* HEADER */
     .header {
-      background: var(--surface);
+      background: var(--surface-pure);
       border-bottom: 1px solid var(--line);
       position: sticky;
       top: 0;
@@ -168,14 +170,14 @@
       padding: 0.4rem 2rem 0.4rem 0.75rem;
       border: 1px solid var(--line);
       border-radius: 6px;
-      background: var(--surface);
+      background: var(--surface-pure);
       color: var(--ink);
       font-weight: 500;
       font-size: 0.875rem;
       font-family: inherit;
       cursor: pointer;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%237a8599' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236b7090' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.5rem center;
     }
@@ -226,7 +228,7 @@
     }
 
     .section {
-      background: var(--surface);
+      background: var(--surface-pure);
       border: 1px solid var(--line);
       border-radius: 12px;
       overflow: hidden;
@@ -358,7 +360,7 @@
       text-align: center;
       border: 1px dashed var(--line);
       border-radius: 10px;
-      background: var(--surface);
+      background: var(--surface-pure);
     }
 
     .empty-state-title {
@@ -425,7 +427,7 @@
     }
 
     .modal {
-      background: var(--surface);
+      background: var(--surface-pure);
       border-radius: 12px;
       max-width: 460px;
       width: 100%;
@@ -475,7 +477,7 @@
       font-family: inherit;
       font-size: 0.9375rem;
       color: var(--ink);
-      background: var(--surface);
+      background: var(--surface-pure);
       transition: border-color 0.15s ease;
     }
 
@@ -567,7 +569,7 @@
     }
 
     .about-inner {
-      background: var(--surface);
+      background: var(--surface-pure);
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 2rem 2.25rem;
@@ -581,8 +583,8 @@
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: var(--bg-soft);
-      color: var(--ink);
+      background: var(--accent-soft);
+      color: var(--accent);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -814,8 +816,8 @@
         // Main content
         React.createElement('div', { className: 'main' },
           React.createElement('div', { className: 'intro' },
-            React.createElement('h2', null, 'Honest public health data, centered on Kansas City.'),
-            React.createElement('p', null, 'An independent resource tracking COVID-19, health behaviors, and the structural factors shaping health outcomes in our community. Updated biweekly.')
+            React.createElement('h2', null, 'Public health information, made accessible.'),
+            React.createElement('p', null, 'This site exists to give Kansas City residents a convenient place to understand the health of their community, gathering relevant local data and translating it into plain language. The goal is interpretation, not analysis: making public health information accessible without requiring readers to navigate complex government websites or specialized terminology.')
           ),
           
           React.createElement('div', { className: 'sections' },
@@ -856,7 +858,10 @@
             React.createElement('div', { className: 'about-avatar' }, 'BL'),
             React.createElement('div', { className: 'about-content' },
               React.createElement('h3', null, 'Benjamin Leifer'),
-              React.createElement('div', { className: 'credentials' }, 'MA · MPH')
+              React.createElement('div', { className: 'credentials' }, 'MA · MPH'),
+              React.createElement('p', null, 
+                'Benjamin Leifer is a Kansas City–based public health researcher. He holds an MA in Biology from the University of Missouri–Kansas City and an MPH with an epidemiology focus from the University of Kansas. His academic interests include Long COVID, chronic disease and disability, the social determinants of health, and the interaction between policy and health outcomes.'
+              )
             )
           )
         ),
