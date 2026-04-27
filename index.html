@@ -542,6 +542,194 @@
       background: var(--bg-soft);
     }
 
+    /* METRIC GRID & CARDS */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 720px) {
+      .metric-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .metric-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .metric-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .metric-card {
+      background: var(--surface-pure);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.125rem;
+      position: relative;
+    }
+
+    .metric-card.accent-covid { border-top: 3px solid var(--covid-accent); }
+    .metric-card.accent-behaviors { border-top: 3px solid var(--behaviors-accent); }
+    .metric-card.accent-sdoh { border-top: 3px solid var(--sdoh-accent); }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .metric-value {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.875rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 0.375rem;
+    }
+
+    .metric-value.placeholder {
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .metric-comparison {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .metric-comparison .national {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      background: var(--bg-soft);
+      border-radius: 3px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      font-size: 0.7rem;
+    }
+
+    .data-section-heading {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    /* PREVENTION BLOCK (COVID section) */
+    .prevention-block {
+      background: var(--surface-pure);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1.75rem 1.75rem 1.5rem;
+    }
+
+    .prevention-header {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .prevention-header h4 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.375rem;
+    }
+
+    .prevention-header p {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .prevention-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 720px) {
+      .prevention-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .prevention-card {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.125rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prevention-card-title {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      margin-bottom: 0.5rem;
+    }
+
+    .prevention-card p {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 0.875rem;
+      flex-grow: 1;
+    }
+
+    .prevention-citations {
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .citation-label {
+      font-size: 0.6875rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .citation-placeholder {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    .citation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .citation-list a {
+      font-size: 0.8125rem;
+      color: var(--accent);
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .citation-list a:hover {
+      text-decoration: underline;
+    }
+
     /* FOOTER */
     .footer {
       border-top: 1px solid var(--line);
@@ -715,13 +903,106 @@
             }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
           ),
           isExpanded && React.createElement('div', { className: 'section-content ' + id },
-            React.createElement('div', { className: 'empty-state' },
+            config.customContent || React.createElement('div', { className: 'empty-state' },
               React.createElement('div', { className: 'empty-state-title' }, config.emptyTitle),
               React.createElement('div', { className: 'empty-state-desc' }, config.emptyDesc)
             )
           )
         );
       };
+
+      // Helper to render a metric card with N/A placeholder
+      const metricCard = function(label, accentClass) {
+        return React.createElement('div', { className: 'metric-card ' + (accentClass || '') },
+          React.createElement('div', { className: 'metric-label' }, label),
+          React.createElement('div', { className: 'metric-value placeholder' }, 'N/A'),
+          React.createElement('div', { className: 'metric-comparison' },
+            React.createElement('span', { className: 'national' }, 'National: N/A')
+          )
+        );
+      };
+
+      // COVID section content — current status + prevention
+      const covidContent = React.createElement(React.Fragment, null,
+        React.createElement('div', { className: 'data-section-heading' }, 
+          'Current status — ' + currentData.name
+        ),
+        React.createElement('div', { className: 'metric-grid' },
+          metricCard('Active cases', 'accent-covid'),
+          metricCard('Weekly new cases', 'accent-covid'),
+          metricCard('Hospitalizations', 'accent-covid'),
+          metricCard('Vaccination rate', 'accent-covid')
+        ),
+        React.createElement('div', { className: 'data-section-heading', style: { marginTop: '1.75rem' } }, 
+          'Long COVID context'
+        ),
+        React.createElement('div', { className: 'metric-grid cols-2' },
+          metricCard('Long COVID prevalence', 'accent-covid'),
+          metricCard('Estimated cases — ' + currentData.name, 'accent-covid')
+        ),
+        React.createElement('div', { className: 'prevention-block', style: { marginTop: '1.75rem' } },
+          React.createElement('div', { className: 'prevention-header' },
+            React.createElement('h4', null, 'Prevention'),
+            React.createElement('p', null, 'Three measures with strong evidence for reducing COVID-19 transmission and severity.')
+          ),
+          React.createElement('div', { className: 'prevention-grid' },
+            React.createElement('div', { className: 'prevention-card' },
+              React.createElement('div', { className: 'prevention-card-title' }, 'Vaccination'),
+              React.createElement('p', null, 'Up-to-date COVID-19 vaccination remains the most effective tool for reducing severe illness, hospitalization, and the risk of long COVID. Boosters are recommended for everyone six months and older.'),
+              React.createElement('div', { className: 'prevention-citations' },
+                React.createElement('div', { className: 'citation-label' }, 'Studies'),
+                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
+              )
+            ),
+            React.createElement('div', { className: 'prevention-card' },
+              React.createElement('div', { className: 'prevention-card-title' }, 'Masking'),
+              React.createElement('p', null, 'Well-fitted respirators (N95, KN95, KF94) significantly reduce the risk of COVID-19 transmission, particularly in indoor and crowded settings. Source control and personal protection both contribute.'),
+              React.createElement('div', { className: 'prevention-citations' },
+                React.createElement('div', { className: 'citation-label' }, 'Studies'),
+                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
+              )
+            ),
+            React.createElement('div', { className: 'prevention-card' },
+              React.createElement('div', { className: 'prevention-card-title' }, 'Air filtration & ventilation'),
+              React.createElement('p', null, 'Improved ventilation and HEPA-grade air filtration substantially lower indoor airborne viral concentrations. Portable air cleaners and Corsi-Rosenthal boxes are accessible options for homes, classrooms, and small offices.'),
+              React.createElement('div', { className: 'prevention-citations' },
+                React.createElement('div', { className: 'citation-label' }, 'Studies'),
+                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
+              )
+            )
+          )
+        )
+      );
+
+      // Health behaviors section content
+      const behaviorsContent = React.createElement(React.Fragment, null,
+        React.createElement('div', { className: 'data-section-heading' }, 
+          currentData.name + ' resident health patterns'
+        ),
+        React.createElement('div', { className: 'metric-grid' },
+          metricCard('Meeting physical activity guidelines', 'accent-behaviors'),
+          metricCard('Adult obesity rate', 'accent-behaviors'),
+          metricCard('Adult smoking rate', 'accent-behaviors'),
+          metricCard('Frequent mental distress', 'accent-behaviors')
+        )
+      );
+
+      // SDOH section content
+      const sdohContent = React.createElement(React.Fragment, null,
+        React.createElement('div', { className: 'data-section-heading' }, 
+          'Structural factors in ' + currentData.name
+        ),
+        React.createElement('div', { className: 'metric-grid' },
+          metricCard('Below poverty line', 'accent-sdoh'),
+          metricCard('Without health insurance', 'accent-sdoh'),
+          metricCard('Food insecurity', 'accent-sdoh'),
+          metricCard('Cost-burdened renters', 'accent-sdoh')
+        ),
+        React.createElement('div', { className: 'metric-grid cols-2', style: { marginTop: '0.75rem' } },
+          metricCard('High school completion (25+)', 'accent-sdoh'),
+          metricCard('Median household income', 'accent-sdoh')
+        )
+      );
 
       return React.createElement(React.Fragment, null,
         // Modal
@@ -785,7 +1066,7 @@
             React.createElement('div', { className: 'header-top' },
               React.createElement('div', { className: 'brand' },
                 React.createElement('h1', null, 'KC Public Health'),
-                React.createElement('div', { className: 'tagline' }, 'Data · Analysis · Community')
+                React.createElement('div', { className: 'tagline' }, 'Data · Interpretation · Community')
               ),
               React.createElement('div', { className: 'header-buttons' },
                 React.createElement('button', { 
@@ -825,22 +1106,19 @@
               title: 'COVID-19 — an ongoing pandemic',
               subtitle: 'Current transmission, long COVID, and what you need to know',
               icon: VirusIcon,
-              emptyTitle: 'Data being prepared',
-              emptyDesc: 'Current COVID-19 metrics for the selected location will appear here once data is gathered.'
+              customContent: covidContent
             }),
             renderSection('behaviors', {
               title: 'Health behaviors',
               subtitle: 'Physical activity, smoking, obesity, mental health',
               icon: ActivityIcon,
-              emptyTitle: 'Data being prepared',
-              emptyDesc: 'Behavioral health indicators will appear here once data is gathered.'
+              customContent: behaviorsContent
             }),
             renderSection('sdoh', {
               title: 'Social determinants of health',
               subtitle: 'The structural factors shaping community health',
               icon: UsersIcon,
-              emptyTitle: 'Data being prepared',
-              emptyDesc: 'Poverty, housing, food security, education, and insurance metrics will appear here once data is gathered.'
+              customContent: sdohContent
             }),
             renderSection('music', {
               title: 'Featured KC artists',
