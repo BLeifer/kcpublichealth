@@ -810,6 +810,13 @@
       font-size: 0.8125rem;
       color: var(--ink-muted);
       letter-spacing: 0.02em;
+      margin-bottom: 0.875rem;
+    }
+
+    .about-content p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
     }
 
     /* FOOTER */
@@ -1913,7 +1920,10 @@
             React.createElement('div', { className: 'about-avatar' }, 'BL'),
             React.createElement('div', { className: 'about-content' },
               React.createElement('h3', null, 'Benjamin Leifer'),
-              React.createElement('div', { className: 'credentials' }, 'MA · MPH')
+              React.createElement('div', { className: 'credentials' }, 'MA · MPH'),
+              React.createElement('p', null,
+                'Benjamin Leifer is a Kansas City\u2013based public health researcher. He holds an MA in Biology from the University of Missouri\u2013Kansas City and an MPH with an epidemiology focus from the University of Kansas. His academic interests include Long COVID, chronic disease, disability, the social determinants of health, and the interaction between policy and health outcomes.'
+              )
             )
           )
         ),
