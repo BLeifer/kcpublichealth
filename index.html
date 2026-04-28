@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KC Public Health — Kansas City Health Data & Resources</title>
-  <meta name="description" content="Independent public health data, COVID-19 updates, and research-backed analysis for Kansas City, Missouri.">
+  <title>KC Public Health — Kansas City Health Data &amp; Resources</title>
+  <meta name="description" content="Independent public health data for the Kansas City metro, sourced from CDC PLACES and other authoritative datasets.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,12 +14,8 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     :root {
       --bg: #d8dde8;
       --bg-soft: #c8cee0;
@@ -34,20 +30,17 @@
       --accent-hover: #1a2240;
       --accent-soft: #e0e4f0;
       
-      /* Section accents - Cool Dusk palette */
-      --covid-bg: #e6d4e8;
-      --covid-accent: #6b2d6b;
-      --covid-text: #4a1f4a;
-      
       --behaviors-bg: #d0e8e2;
       --behaviors-accent: #0d6e6e;
-      --behaviors-text: #094545;
+      
+      --outcomes-bg: #f3dee0;
+      --outcomes-accent: #9c1f3a;
       
       --sdoh-bg: #d4d8ee;
       --sdoh-accent: #2d3656;
-      --sdoh-text: #1a2240;
       
-      --music-bg: #1a1f2e;
+      --disability-bg: #e6d4e8;
+      --disability-accent: #6b2d6b;
     }
 
     body {
@@ -57,10 +50,6 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       line-height: 1.5;
-    }
-
-    .serif {
-      font-family: 'Source Serif 4', Georgia, serif;
     }
 
     /* HEADER */
@@ -83,6 +72,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .brand h1 {
@@ -104,6 +95,7 @@
     .header-buttons {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -127,27 +119,22 @@
     .btn-ghost:hover {
       background: var(--bg-soft);
       color: var(--ink);
-      border-color: var(--ink-muted);
     }
 
     .btn-primary {
       background: var(--ink);
-      color: var(--surface);
+      color: var(--surface-pure);
       border-color: var(--ink);
     }
 
-    .btn-primary:hover {
-      background: #000;
-    }
+    .btn-primary:hover { background: #000; }
 
     .btn-disabled {
       opacity: 0.55;
       cursor: not-allowed;
     }
 
-    .btn-disabled:hover {
-      background: var(--ink);
-    }
+    .btn-disabled:hover { background: var(--ink); }
 
     /* LOCATION FILTER */
     .location-filter {
@@ -156,6 +143,7 @@
       gap: 0.75rem;
       padding-top: 1rem;
       border-top: 1px solid var(--line);
+      flex-wrap: wrap;
     }
 
     .location-filter-label {
@@ -182,9 +170,7 @@
       background-position: right 0.5rem center;
     }
 
-    .location-filter select:hover {
-      border-color: var(--ink-muted);
-    }
+    .location-filter select:hover { border-color: var(--ink-muted); }
 
     .location-filter .region {
       font-size: 0.8125rem;
@@ -201,7 +187,7 @@
 
     .intro {
       max-width: 640px;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
     }
 
     .intro h2 {
@@ -220,7 +206,54 @@
       line-height: 1.65;
     }
 
-    /* SECTION CARDS */
+    /* DATA SOURCE BANNER */
+    .source-banner {
+      background: var(--surface-pure);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .source-banner strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .source-banner a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .source-banner a:hover {
+      text-decoration: underline;
+    }
+
+    .data-not-available {
+      background: var(--surface-pure);
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .data-not-available strong {
+      display: block;
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-bottom: 0.375rem;
+    }
+
+    /* SECTIONS */
     .sections {
       display: flex;
       flex-direction: column;
@@ -232,16 +265,11 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       overflow: hidden;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      transition: border-color 0.2s ease;
     }
 
-    .section:hover {
-      border-color: var(--ink-muted);
-    }
-
-    .section.expanded {
-      border-color: var(--ink-muted);
-    }
+    .section:hover { border-color: var(--ink-muted); }
+    .section.expanded { border-color: var(--ink-muted); }
 
     .section-trigger {
       width: 100%;
@@ -258,9 +286,7 @@
       transition: background 0.15s ease;
     }
 
-    .section-trigger:hover {
-      background: var(--bg-soft);
-    }
+    .section-trigger:hover { background: var(--bg-soft); }
 
     .section-icon {
       width: 44px;
@@ -272,25 +298,10 @@
       flex-shrink: 0;
     }
 
-    .section-icon.covid {
-      background: var(--covid-bg);
-      color: var(--covid-accent);
-    }
-
-    .section-icon.behaviors {
-      background: var(--behaviors-bg);
-      color: var(--behaviors-accent);
-    }
-
-    .section-icon.sdoh {
-      background: var(--sdoh-bg);
-      color: var(--sdoh-accent);
-    }
-
-    .section-icon.music {
-      background: var(--bg-soft);
-      color: var(--ink);
-    }
+    .section-icon.behaviors { background: var(--behaviors-bg); color: var(--behaviors-accent); }
+    .section-icon.outcomes { background: var(--outcomes-bg); color: var(--outcomes-accent); }
+    .section-icon.sdoh { background: var(--sdoh-bg); color: var(--sdoh-accent); }
+    .section-icon.disability { background: var(--disability-bg); color: var(--disability-accent); }
 
     .section-icon svg {
       width: 22px;
@@ -330,236 +341,24 @@
       stroke-linejoin: round;
     }
 
-    .section-chevron.rotated {
-      transform: rotate(180deg);
-    }
+    .section-chevron.rotated { transform: rotate(180deg); }
 
     /* SECTION CONTENT */
     .section-content {
       padding: 0 1.75rem 1.75rem;
       border-top: 1px solid var(--line);
-      margin-top: -1px;
       padding-top: 1.75rem;
     }
 
-    .section-content.covid {
-      background: linear-gradient(to bottom, var(--covid-bg), transparent 60%);
-    }
-
-    .section-content.behaviors {
-      background: linear-gradient(to bottom, var(--behaviors-bg), transparent 60%);
-    }
-
-    .section-content.sdoh {
-      background: linear-gradient(to bottom, var(--sdoh-bg), transparent 60%);
-    }
-
-    /* EMPTY STATE */
-    .empty-state {
-      padding: 3rem 1rem;
-      text-align: center;
-      border: 1px dashed var(--line);
-      border-radius: 10px;
-      background: var(--surface-pure);
-    }
-
-    .empty-state-title {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-      margin-bottom: 0.375rem;
-    }
-
-    .empty-state-desc {
-      font-size: 0.8125rem;
-      color: var(--ink-muted);
-      max-width: 340px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
-    /* MUSIC SECTION - distinctive dark treatment */
-    .music-section {
-      background: var(--music-bg);
-      color: var(--surface);
-      border-radius: 12px;
-      margin-top: 2rem;
-      overflow: hidden;
-    }
-
-    .music-section .section-trigger {
-      color: var(--surface);
-    }
-
-    .music-section .section-trigger:hover {
-      background: rgba(255,255,255,0.04);
-    }
-
-    .music-section .section-text h3 {
-      color: var(--surface);
-    }
-
-    .music-section .section-text p {
-      color: rgba(255,255,255,0.6);
-    }
-
-    .music-section .section-icon.music {
-      background: rgba(255,255,255,0.08);
-      color: #f97316;
-    }
-
-    .music-section .section-chevron {
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* MODAL */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(26, 31, 46, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    .modal {
-      background: var(--surface-pure);
-      border-radius: 12px;
-      max-width: 460px;
-      width: 100%;
-      padding: 2rem;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    }
-
-    .modal h3 {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-    }
-
-    .modal .subtitle {
-      font-size: 0.875rem;
-      color: var(--ink-muted);
-      margin-top: 0.5rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--ink-soft);
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 0.625rem 0.875rem;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.9375rem;
-      color: var(--ink);
-      background: var(--surface-pure);
-      transition: border-color 0.15s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--ink);
-    }
-
-    .form-group textarea {
-      resize: none;
-      min-height: 100px;
-      line-height: 1.5;
-    }
-
-    .privacy-note {
-      background: var(--bg-soft);
-      border-radius: 6px;
-      padding: 0.75rem 0.875rem;
-      font-size: 0.75rem;
-      color: var(--ink-soft);
-      line-height: 1.5;
-      margin-top: 0.5rem;
-    }
-
-    .modal-buttons {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .modal-buttons button {
-      flex: 1;
-      padding: 0.625rem 1rem;
-      border-radius: 6px;
-      font-weight: 500;
-      font-size: 0.875rem;
-      cursor: pointer;
-      font-family: inherit;
-      border: 1px solid transparent;
-      transition: all 0.15s ease;
-    }
-
-    .btn-submit {
-      background: var(--ink);
-      color: var(--surface);
-      border-color: var(--ink);
-    }
-
-    .btn-submit:hover {
-      background: #000;
-    }
-
-    .btn-cancel {
-      background: transparent;
-      color: var(--ink-soft);
-      border-color: var(--line);
-    }
-
-    .btn-cancel:hover {
-      background: var(--bg-soft);
-    }
-
-    /* METRIC GRID & CARDS */
+    /* METRIC GRID */
     .metric-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.75rem;
-      margin-bottom: 1.5rem;
     }
 
     @media (min-width: 720px) {
-      .metric-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-      .metric-grid.cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .metric-grid.cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .metric-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     .metric-card {
@@ -567,12 +366,12 @@
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 1rem 1.125rem;
-      position: relative;
     }
 
-    .metric-card.accent-covid { border-top: 3px solid var(--covid-accent); }
     .metric-card.accent-behaviors { border-top: 3px solid var(--behaviors-accent); }
+    .metric-card.accent-outcomes { border-top: 3px solid var(--outcomes-accent); }
     .metric-card.accent-sdoh { border-top: 3px solid var(--sdoh-accent); }
+    .metric-card.accent-disability { border-top: 3px solid var(--disability-accent); }
 
     .metric-label {
       font-size: 0.7rem;
@@ -597,276 +396,40 @@
     .metric-value.placeholder {
       color: var(--ink-muted);
       font-weight: 500;
+      font-size: 1.25rem;
     }
 
-    .metric-comparison {
-      font-size: 0.75rem;
+    .metric-meta {
+      font-size: 0.7rem;
       color: var(--ink-muted);
       line-height: 1.4;
     }
 
-    .metric-comparison .national {
+    .metric-meta .ci {
+      display: block;
+      margin-top: 0.125rem;
+      font-style: italic;
+    }
+
+    .metric-meta .year {
       display: inline-block;
       padding: 0.1rem 0.4rem;
       background: var(--bg-soft);
       border-radius: 3px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--ink-soft);
-      font-size: 0.7rem;
-    }
-
-    .data-section-heading {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-      margin-bottom: 0.875rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    /* PREVENTION BLOCK (COVID section) */
-    .prevention-block {
-      background: var(--surface-pure);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 1.75rem 1.75rem 1.5rem;
-    }
-
-    .prevention-header {
-      margin-bottom: 1.25rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .prevention-header h4 {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.375rem;
-    }
-
-    .prevention-header p {
-      font-size: 0.875rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-    }
-
-    .prevention-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    @media (min-width: 720px) {
-      .prevention-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-    }
-
-    .prevention-card {
-      background: var(--bg);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 1.125rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .prevention-card-title {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-      margin-bottom: 0.5rem;
-    }
-
-    .prevention-card p {
-      font-size: 0.875rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-      margin-bottom: 0.875rem;
-      flex-grow: 1;
-    }
-
-    .prevention-citations {
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--line-soft);
-    }
-
-    .citation-label {
-      font-size: 0.6875rem;
-      color: var(--ink-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .citation-placeholder {
-      font-size: 0.8125rem;
-      color: var(--ink-muted);
-      font-style: italic;
-    }
-
-    .citation-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .citation-list a {
-      font-size: 0.8125rem;
-      color: var(--accent);
-      text-decoration: none;
-      line-height: 1.4;
-    }
-
-    .citation-list a:hover {
-      text-decoration: underline;
-    }
-
-    /* LEARN PAGE */
-    .learn-page {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 4rem 2rem 5rem;
-    }
-
-    .learn-intro {
-      max-width: 640px;
-      margin-bottom: 3.5rem;
-    }
-
-    .learn-eyebrow {
-      font-size: 0.75rem;
-      color: var(--ink-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .learn-title {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 2.25rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 1.25rem;
-    }
-
-    .learn-subtitle {
-      font-size: 1rem;
-      line-height: 1.65;
-      color: var(--ink-soft);
-    }
-
-    .glossary-category {
-      margin-bottom: 3rem;
-    }
-
-    .glossary-category-header {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin-bottom: 0.375rem;
-      padding-bottom: 0.875rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .glossary-category-desc {
-      font-size: 0.8125rem;
-      color: var(--ink-muted);
-      line-height: 1.55;
-      margin-top: -0.5rem;
-      margin-bottom: 1.5rem;
-      font-style: italic;
-    }
-
-    .glossary-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
-    @media (min-width: 720px) {
-      .glossary-list {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem 1.5rem;
-      }
-    }
-
-    .glossary-entry {
-      background: var(--surface-pure);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 1.125rem 1.375rem;
-      transition: border-color 0.15s ease;
-    }
-
-    .glossary-entry:hover {
-      border-color: var(--ink-muted);
-    }
-
-    .glossary-term {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.0625rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-      margin-bottom: 0.375rem;
-    }
-
-    .glossary-definition {
-      font-size: 0.875rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-    }
-
-    .glossary-definition.empty {
-      color: var(--ink-muted);
-      font-style: italic;
-    }
-
-    .learn-footer-note {
-      margin-top: 3rem;
-      padding: 1.25rem 1.5rem;
-      background: var(--surface-pure);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-
-    .learn-footer-note strong {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    @media (max-width: 640px) {
-      .learn-page {
-        padding: 2.5rem 1.25rem 4rem;
-      }
-      .learn-title {
-        font-size: 1.875rem;
-      }
+      font-size: 0.65rem;
+      margin-top: 0.25rem;
     }
 
     /* SUPPORT PAGE */
-    .support-page {
+    .support-page, .learn-page {
       max-width: 720px;
       margin: 0 auto;
       padding: 4rem 2rem 5rem;
     }
+    
+    .learn-page { max-width: 880px; }
 
     .support-back {
       display: inline-flex;
@@ -882,12 +445,9 @@
       border: none;
       padding: 0;
       font-family: inherit;
-      transition: color 0.15s ease;
     }
 
-    .support-back:hover {
-      color: var(--ink);
-    }
+    .support-back:hover { color: var(--ink); }
 
     .support-back svg {
       width: 14px;
@@ -899,7 +459,7 @@
       stroke-linejoin: round;
     }
 
-    .support-eyebrow {
+    .support-eyebrow, .learn-eyebrow {
       font-size: 0.75rem;
       color: var(--ink-muted);
       text-transform: uppercase;
@@ -908,7 +468,7 @@
       margin-bottom: 0.75rem;
     }
 
-    .support-title {
+    .support-title, .learn-title {
       font-family: 'Source Serif 4', Georgia, serif;
       font-size: 2.25rem;
       font-weight: 600;
@@ -918,19 +478,9 @@
       margin-bottom: 2rem;
     }
 
-    .support-body {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--ink-soft);
-    }
-
-    .support-body p {
-      margin-bottom: 1.25rem;
-    }
-
-    .support-body p:last-child {
-      margin-bottom: 0;
-    }
+    .support-body { font-size: 1rem; line-height: 1.7; color: var(--ink-soft); }
+    .support-body p { margin-bottom: 1.25rem; }
+    .support-body p:last-child { margin-bottom: 0; }
 
     .support-card {
       background: var(--surface-pure);
@@ -987,7 +537,6 @@
       font-size: 0.875rem;
       font-weight: 600;
       color: var(--ink);
-      letter-spacing: -0.005em;
     }
 
     .support-amount-note {
@@ -1038,38 +587,184 @@
       margin-top: 2rem;
     }
 
-    @media (max-width: 640px) {
-      .support-page {
-        padding: 2.5rem 1.25rem 4rem;
-      }
-      .support-title {
-        font-size: 1.875rem;
-      }
-      .support-card {
-        padding: 1.75rem 1.5rem 1.5rem;
-      }
+    /* LEARN PAGE */
+    .learn-intro { max-width: 640px; margin-bottom: 3.5rem; }
+    .learn-subtitle { font-size: 1rem; line-height: 1.65; color: var(--ink-soft); }
+
+    .glossary-category { margin-bottom: 3rem; }
+
+    .glossary-category-header {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 0.375rem;
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid var(--line);
     }
 
-    /* FOOTER */
-    .footer {
-      border-top: 1px solid var(--line);
-      padding: 2rem;
-      margin-top: 3rem;
-    }
-
-    .footer-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .footer p {
+    .glossary-category-desc {
       font-size: 0.8125rem;
       color: var(--ink-muted);
+      line-height: 1.55;
+      margin-top: -0.5rem;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .glossary-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 720px) {
+      .glossary-list {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem 1.5rem;
+      }
+    }
+
+    .glossary-entry {
+      background: var(--surface-pure);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1.125rem 1.375rem;
+    }
+
+    .glossary-term {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      margin-bottom: 0.375rem;
+    }
+
+    .glossary-definition {
+      font-size: 0.875rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    .glossary-definition.empty {
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    .learn-footer-note {
+      margin-top: 3rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface-pure);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      color: var(--ink-soft);
       line-height: 1.6;
     }
 
-    /* ABOUT SECTION */
+    .learn-footer-note strong { color: var(--ink); font-weight: 600; }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 31, 46, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal {
+      background: var(--surface-pure);
+      border-radius: 12px;
+      max-width: 460px;
+      width: 100%;
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .modal h3 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .modal .subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      color: var(--ink);
+      background: var(--surface-pure);
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--ink);
+    }
+
+    .form-group textarea { resize: none; min-height: 100px; line-height: 1.5; }
+
+    .privacy-note {
+      background: var(--bg-soft);
+      border-radius: 6px;
+      padding: 0.75rem 0.875rem;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-top: 0.5rem;
+    }
+
+    .modal-buttons { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 0.625rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-family: inherit;
+      border: 1px solid transparent;
+    }
+
+    .btn-submit { background: var(--ink); color: var(--surface-pure); border-color: var(--ink); }
+    .btn-submit:hover { background: #000; }
+
+    .btn-cancel { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+    .btn-cancel:hover { background: var(--bg-soft); }
+
+    /* ABOUT */
     .about {
       max-width: 1120px;
       margin: 4rem auto 0;
@@ -1115,25 +810,41 @@
       font-size: 0.8125rem;
       color: var(--ink-muted);
       letter-spacing: 0.02em;
-      margin-bottom: 0.875rem;
     }
 
-    .about-content p {
-      font-size: 0.9375rem;
-      color: var(--ink-soft);
-      line-height: 1.65;
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
     }
 
     @media (max-width: 640px) {
-      .header-inner, .main, .footer, .about { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .header-inner, .main, .footer, .about, .support-page, .learn-page {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
       .main { padding-top: 2rem; }
-      .section-trigger { padding: 1.25rem; grid-template-columns: auto 1fr auto; gap: 0.875rem; }
+      .section-trigger { padding: 1.25rem; gap: 0.875rem; }
       .section-icon { width: 38px; height: 38px; }
       .section-icon svg { width: 18px; height: 18px; }
       .section-text h3 { font-size: 1.0625rem; }
       .intro h2 { font-size: 1.625rem; }
       .brand h1 { font-size: 1.5rem; }
-      .about-inner { padding: 1.5rem 1.5rem; grid-template-columns: 1fr; gap: 1rem; }
+      .about-inner { padding: 1.5rem; grid-template-columns: 1fr; gap: 1rem; }
+      .support-title, .learn-title { font-size: 1.875rem; }
     }
   </style>
 </head>
@@ -1141,6 +852,753 @@
   <div id="root"></div>
 
   <script>
+    const HEALTH_DATA = {
+  "lastUpdated": "2026-04-28",
+  "source": {
+    "name": "CDC PLACES: Local Data for Better Health, County Data 2025 release",
+    "url": "https://www.cdc.gov/places/",
+    "methodology": "Crude prevalence among adults, derived from BRFSS. Confidence intervals shown."
+  },
+  "locations": {
+    "jackson-mo": {
+      "name": "Jackson County, MO",
+      "region": "Missouri \u00b7 KC core",
+      "totalPopulation": "718,560",
+      "metrics": {
+        "obesity": {
+          "value": 37.2,
+          "unit": "%",
+          "low": 33.3,
+          "high": 41.4,
+          "year": 2023
+        },
+        "smoking": {
+          "value": 15.8,
+          "unit": "%",
+          "low": 13.1,
+          "high": 18.7,
+          "year": 2023
+        },
+        "physical_inactivity": {
+          "value": 30.9,
+          "unit": "%",
+          "low": 26.9,
+          "high": 35.0,
+          "year": 2023
+        },
+        "mental_distress": {
+          "value": 18.9,
+          "unit": "%",
+          "low": 16.8,
+          "high": 21.2,
+          "year": 2023
+        },
+        "hypertension": {
+          "value": 35.7,
+          "unit": "%",
+          "low": 32.8,
+          "high": 38.7,
+          "year": 2023
+        },
+        "diabetes": {
+          "value": 12.1,
+          "unit": "%",
+          "low": 10.6,
+          "high": 13.6,
+          "year": 2023
+        },
+        "depression": {
+          "value": 25.4,
+          "unit": "%",
+          "low": 22.6,
+          "high": 28.2,
+          "year": 2023
+        },
+        "chd": {
+          "value": 6.2,
+          "unit": "%",
+          "low": 5.5,
+          "high": 7.0,
+          "year": 2023
+        },
+        "no_insurance": {
+          "value": 10.0,
+          "unit": "%",
+          "low": 8.1,
+          "high": 12.3,
+          "year": 2023
+        },
+        "food_insecurity": {
+          "value": 16.6,
+          "unit": "%",
+          "low": 13.7,
+          "high": 19.7,
+          "year": 2023
+        },
+        "housing_insecurity": {
+          "value": 15.4,
+          "unit": "%",
+          "low": 13.0,
+          "high": 17.9,
+          "year": 2023
+        },
+        "transportation": {
+          "value": 9.6,
+          "unit": "%",
+          "low": 8.2,
+          "high": 11.2,
+          "year": 2023
+        },
+        "utility_threat": {
+          "value": 11.1,
+          "unit": "%",
+          "low": 9.5,
+          "high": 12.8,
+          "year": 2023
+        },
+        "any_disability": {
+          "value": 36.3,
+          "unit": "%",
+          "low": 32.4,
+          "high": 40.2,
+          "year": 2023
+        },
+        "cognitive": {
+          "value": 17.5,
+          "unit": "%",
+          "low": 15.2,
+          "high": 20.0,
+          "year": 2023
+        },
+        "mobility": {
+          "value": 16.1,
+          "unit": "%",
+          "low": 14.0,
+          "high": 18.3,
+          "year": 2023
+        },
+        "independent_living": {
+          "value": 9.5,
+          "unit": "%",
+          "low": 8.2,
+          "high": 11.0,
+          "year": 2023
+        },
+        "hearing": {
+          "value": 7.4,
+          "unit": "%",
+          "low": 6.5,
+          "high": 8.3,
+          "year": 2023
+        },
+        "vision": {
+          "value": 5.4,
+          "unit": "%",
+          "low": 4.7,
+          "high": 6.2,
+          "year": 2023
+        },
+        "self_care": {
+          "value": 4.1,
+          "unit": "%",
+          "low": 3.6,
+          "high": 4.7,
+          "year": 2023
+        }
+      }
+    },
+    "clay-mo": {
+      "name": "Clay County, MO",
+      "region": "Missouri \u00b7 north of the river",
+      "totalPopulation": "259,772",
+      "metrics": {
+        "obesity": {
+          "value": 37.4,
+          "unit": "%",
+          "low": 32.0,
+          "high": 43.3,
+          "year": 2023
+        },
+        "smoking": {
+          "value": 14.2,
+          "unit": "%",
+          "low": 11.4,
+          "high": 17.4,
+          "year": 2023
+        },
+        "physical_inactivity": {
+          "value": 24.5,
+          "unit": "%",
+          "low": 20.5,
+          "high": 29.4,
+          "year": 2023
+        },
+        "mental_distress": {
+          "value": 16.5,
+          "unit": "%",
+          "low": 14.3,
+          "high": 18.7,
+          "year": 2023
+        },
+        "hypertension": {
+          "value": 34.9,
+          "unit": "%",
+          "low": 31.3,
+          "high": 38.7,
+          "year": 2023
+        },
+        "diabetes": {
+          "value": 10.8,
+          "unit": "%",
+          "low": 9.2,
+          "high": 12.5,
+          "year": 2023
+        },
+        "depression": {
+          "value": 23.4,
+          "unit": "%",
+          "low": 20.2,
+          "high": 26.9,
+          "year": 2023
+        },
+        "chd": {
+          "value": 5.8,
+          "unit": "%",
+          "low": 5.0,
+          "high": 6.7,
+          "year": 2023
+        },
+        "no_insurance": {
+          "value": 8.0,
+          "unit": "%",
+          "low": 6.2,
+          "high": 10.1,
+          "year": 2023
+        },
+        "food_insecurity": {
+          "value": 11.1,
+          "unit": "%",
+          "low": 8.7,
+          "high": 13.5,
+          "year": 2023
+        },
+        "housing_insecurity": {
+          "value": 10.8,
+          "unit": "%",
+          "low": 8.9,
+          "high": 12.8,
+          "year": 2023
+        },
+        "transportation": {
+          "value": 7.2,
+          "unit": "%",
+          "low": 6.0,
+          "high": 8.3,
+          "year": 2023
+        },
+        "utility_threat": {
+          "value": 7.6,
+          "unit": "%",
+          "low": 6.3,
+          "high": 8.8,
+          "year": 2023
+        },
+        "any_disability": {
+          "value": 32.8,
+          "unit": "%",
+          "low": 28.7,
+          "high": 37.7,
+          "year": 2023
+        },
+        "cognitive": {
+          "value": 15.5,
+          "unit": "%",
+          "low": 13.3,
+          "high": 18.1,
+          "year": 2023
+        },
+        "mobility": {
+          "value": 13.3,
+          "unit": "%",
+          "low": 11.3,
+          "high": 15.7,
+          "year": 2023
+        },
+        "independent_living": {
+          "value": 7.7,
+          "unit": "%",
+          "low": 6.6,
+          "high": 9.0,
+          "year": 2023
+        },
+        "hearing": {
+          "value": 7.3,
+          "unit": "%",
+          "low": 6.4,
+          "high": 8.4,
+          "year": 2023
+        },
+        "vision": {
+          "value": 4.2,
+          "unit": "%",
+          "low": 3.6,
+          "high": 4.8,
+          "year": 2023
+        },
+        "self_care": {
+          "value": 3.1,
+          "unit": "%",
+          "low": 2.7,
+          "high": 3.7,
+          "year": 2023
+        }
+      }
+    },
+    "johnson-ks": {
+      "name": "Johnson County, KS",
+      "region": "Kansas \u00b7 southwest metro",
+      "totalPopulation": "622,237",
+      "metrics": {
+        "obesity": {
+          "value": 31.2,
+          "unit": "%",
+          "low": 27.7,
+          "high": 34.6,
+          "year": 2023
+        },
+        "smoking": {
+          "value": 9.7,
+          "unit": "%",
+          "low": 7.5,
+          "high": 12.2,
+          "year": 2023
+        },
+        "physical_inactivity": {
+          "value": 19.3,
+          "unit": "%",
+          "low": 16.1,
+          "high": 22.7,
+          "year": 2023
+        },
+        "mental_distress": {
+          "value": 13.2,
+          "unit": "%",
+          "low": 11.4,
+          "high": 14.9,
+          "year": 2023
+        },
+        "hypertension": {
+          "value": 32.0,
+          "unit": "%",
+          "low": 29.5,
+          "high": 34.6,
+          "year": 2023
+        },
+        "diabetes": {
+          "value": 9.4,
+          "unit": "%",
+          "low": 8.2,
+          "high": 10.7,
+          "year": 2023
+        },
+        "depression": {
+          "value": 18.4,
+          "unit": "%",
+          "low": 16.3,
+          "high": 20.7,
+          "year": 2023
+        },
+        "chd": {
+          "value": 5.0,
+          "unit": "%",
+          "low": 4.4,
+          "high": 5.8,
+          "year": 2023
+        },
+        "no_insurance": {
+          "value": 6.6,
+          "unit": "%",
+          "low": 5.2,
+          "high": 8.3,
+          "year": 2023
+        },
+        "food_insecurity": {
+          "value": 7.5,
+          "unit": "%",
+          "low": 5.8,
+          "high": 9.5,
+          "year": 2023
+        },
+        "housing_insecurity": {
+          "value": 7.7,
+          "unit": "%",
+          "low": 6.2,
+          "high": 9.4,
+          "year": 2023
+        },
+        "transportation": {
+          "value": 4.7,
+          "unit": "%",
+          "low": 3.9,
+          "high": 5.6,
+          "year": 2023
+        },
+        "utility_threat": {
+          "value": 5.5,
+          "unit": "%",
+          "low": 4.6,
+          "high": 6.7,
+          "year": 2023
+        },
+        "any_disability": {
+          "value": 24.4,
+          "unit": "%",
+          "low": 21.2,
+          "high": 27.8,
+          "year": 2023
+        },
+        "cognitive": {
+          "value": 11.1,
+          "unit": "%",
+          "low": 9.3,
+          "high": 13.0,
+          "year": 2023
+        },
+        "mobility": {
+          "value": 9.6,
+          "unit": "%",
+          "low": 8.1,
+          "high": 11.5,
+          "year": 2023
+        },
+        "independent_living": {
+          "value": 5.5,
+          "unit": "%",
+          "low": 4.6,
+          "high": 6.5,
+          "year": 2023
+        },
+        "hearing": {
+          "value": 6.1,
+          "unit": "%",
+          "low": 5.3,
+          "high": 6.9,
+          "year": 2023
+        },
+        "vision": {
+          "value": 3.0,
+          "unit": "%",
+          "low": 2.6,
+          "high": 3.6,
+          "year": 2023
+        },
+        "self_care": {
+          "value": 2.4,
+          "unit": "%",
+          "low": 2.0,
+          "high": 2.8,
+          "year": 2023
+        }
+      }
+    },
+    "wyandotte-ks": {
+      "name": "Wyandotte County, KS",
+      "region": "Kansas \u00b7 KCK and surrounding",
+      "totalPopulation": "165,281",
+      "metrics": {
+        "obesity": {
+          "value": 40.7,
+          "unit": "%",
+          "low": 36.6,
+          "high": 45.2,
+          "year": 2023
+        },
+        "smoking": {
+          "value": 17.6,
+          "unit": "%",
+          "low": 15.2,
+          "high": 20.3,
+          "year": 2023
+        },
+        "physical_inactivity": {
+          "value": 34.7,
+          "unit": "%",
+          "low": 31.0,
+          "high": 38.7,
+          "year": 2023
+        },
+        "mental_distress": {
+          "value": 17.2,
+          "unit": "%",
+          "low": 15.3,
+          "high": 19.3,
+          "year": 2023
+        },
+        "hypertension": {
+          "value": 37.0,
+          "unit": "%",
+          "low": 34.2,
+          "high": 39.9,
+          "year": 2023
+        },
+        "diabetes": {
+          "value": 14.5,
+          "unit": "%",
+          "low": 13.0,
+          "high": 16.2,
+          "year": 2023
+        },
+        "depression": {
+          "value": 17.7,
+          "unit": "%",
+          "low": 15.5,
+          "high": 20.3,
+          "year": 2023
+        },
+        "chd": {
+          "value": 6.7,
+          "unit": "%",
+          "low": 6.0,
+          "high": 7.5,
+          "year": 2023
+        },
+        "no_insurance": {
+          "value": 17.3,
+          "unit": "%",
+          "low": 14.2,
+          "high": 20.7,
+          "year": 2023
+        },
+        "food_insecurity": {
+          "value": 22.7,
+          "unit": "%",
+          "low": 19.2,
+          "high": 26.3,
+          "year": 2023
+        },
+        "housing_insecurity": {
+          "value": 18.6,
+          "unit": "%",
+          "low": 16.0,
+          "high": 21.5,
+          "year": 2023
+        },
+        "transportation": {
+          "value": 11.7,
+          "unit": "%",
+          "low": 10.1,
+          "high": 13.5,
+          "year": 2023
+        },
+        "utility_threat": {
+          "value": 14.0,
+          "unit": "%",
+          "low": 12.2,
+          "high": 16.0,
+          "year": 2023
+        },
+        "any_disability": {
+          "value": 32.5,
+          "unit": "%",
+          "low": 29.2,
+          "high": 36.2,
+          "year": 2023
+        },
+        "cognitive": {
+          "value": 17.1,
+          "unit": "%",
+          "low": 15.1,
+          "high": 19.4,
+          "year": 2023
+        },
+        "mobility": {
+          "value": 16.0,
+          "unit": "%",
+          "low": 14.0,
+          "high": 18.0,
+          "year": 2023
+        },
+        "independent_living": {
+          "value": 9.9,
+          "unit": "%",
+          "low": 8.8,
+          "high": 11.3,
+          "year": 2023
+        },
+        "hearing": {
+          "value": 6.8,
+          "unit": "%",
+          "low": 6.1,
+          "high": 7.7,
+          "year": 2023
+        },
+        "vision": {
+          "value": 7.0,
+          "unit": "%",
+          "low": 6.2,
+          "high": 7.8,
+          "year": 2023
+        },
+        "self_care": {
+          "value": 5.0,
+          "unit": "%",
+          "low": 4.4,
+          "high": 5.7,
+          "year": 2023
+        }
+      }
+    },
+    "missouri": {
+      "name": "Missouri",
+      "region": "State of Missouri",
+      "totalPopulation": null,
+      "metrics": null
+    },
+    "kansas": {
+      "name": "Kansas",
+      "region": "State of Kansas",
+      "totalPopulation": null,
+      "metrics": null
+    },
+    "national": {
+      "name": "United States",
+      "region": "National figures",
+      "totalPopulation": null,
+      "metrics": null
+    }
+  },
+  "sections": [
+    {
+      "id": "behaviors",
+      "title": "Health behaviors",
+      "subtitle": "Risk behaviors and mental health among adults",
+      "metrics": [
+        [
+          "Adult obesity",
+          "Obesity",
+          "obesity"
+        ],
+        [
+          "Current cigarette smoking",
+          "Current Cigarette Smoking",
+          "smoking"
+        ],
+        [
+          "No leisure-time physical activity",
+          "Physical Inactivity",
+          "physical_inactivity"
+        ],
+        [
+          "Frequent mental distress",
+          "Frequent Mental Distress",
+          "mental_distress"
+        ]
+      ]
+    },
+    {
+      "id": "outcomes",
+      "title": "Health outcomes",
+      "subtitle": "Prevalence of common chronic conditions",
+      "metrics": [
+        [
+          "High blood pressure",
+          "High Blood Pressure",
+          "hypertension"
+        ],
+        [
+          "Diabetes (diagnosed)",
+          "Diabetes",
+          "diabetes"
+        ],
+        [
+          "Depression",
+          "Depression",
+          "depression"
+        ],
+        [
+          "Coronary heart disease",
+          "Coronary Heart Disease",
+          "chd"
+        ]
+      ]
+    },
+    {
+      "id": "sdoh",
+      "title": "Social determinants of health",
+      "subtitle": "Health-related social needs reported in the past 12 months",
+      "metrics": [
+        [
+          "Lack of health insurance (ages 18\u201364)",
+          "Health Insurance",
+          "no_insurance"
+        ],
+        [
+          "Food insecurity",
+          "Food Insecurity",
+          "food_insecurity"
+        ],
+        [
+          "Housing insecurity",
+          "Housing Insecurity",
+          "housing_insecurity"
+        ],
+        [
+          "Lack of reliable transportation",
+          "Transportation Barriers",
+          "transportation"
+        ],
+        [
+          "Utility services shut-off threat",
+          "Utility Services Threat",
+          "utility_threat"
+        ]
+      ]
+    },
+    {
+      "id": "disability",
+      "title": "Disability",
+      "subtitle": "Adults reporting one or more functional disabilities",
+      "metrics": [
+        [
+          "Any disability",
+          "Any Disability",
+          "any_disability"
+        ],
+        [
+          "Cognitive disability",
+          "Cognitive Disability",
+          "cognitive"
+        ],
+        [
+          "Mobility disability",
+          "Mobility Disability",
+          "mobility"
+        ],
+        [
+          "Independent living disability",
+          "Independent Living Disability",
+          "independent_living"
+        ],
+        [
+          "Hearing disability",
+          "Hearing Disability",
+          "hearing"
+        ],
+        [
+          "Vision disability",
+          "Vision Disability",
+          "vision"
+        ],
+        [
+          "Self-care disability",
+          "Self-care Disability",
+          "self_care"
+        ]
+      ]
+    }
+  ]
+};
+
     const { useState } = React;
 
     const App = () => {
@@ -1150,17 +1608,8 @@
       const [currentPage, setCurrentPage] = useState('home');
       const [feedbackForm, setFeedbackForm] = useState({ name: '', email: '', message: '', category: 'suggestion' });
 
-      const locations = {
-        'jackson-mo': { name: 'Jackson County, MO', region: 'Missouri · KC core' },
-        'clay-mo': { name: 'Clay County, MO', region: 'Missouri · north of the river' },
-        'johnson-ks': { name: 'Johnson County, KS', region: 'Kansas · southwest metro' },
-        'wyandotte-ks': { name: 'Wyandotte County, KS', region: 'Kansas · KCK and surrounding' },
-        'missouri': { name: 'Missouri', region: 'State of Missouri' },
-        'kansas': { name: 'Kansas', region: 'State of Kansas' },
-        'national': { name: 'United States', region: 'National figures for comparison' }
-      };
-
-      const currentData = locations[selectedLocation];
+      const currentData = HEALTH_DATA.locations[selectedLocation];
+      const sections = HEALTH_DATA.sections;
 
       const handleFeedbackSubmit = function(e) {
         e.preventDefault();
@@ -1180,161 +1629,97 @@
         setExpandedSection(expandedSection === id ? null : id);
       };
 
-      // SVG icon components
-      const VirusIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
-        React.createElement('circle', { cx: '12', cy: '12', r: '5' }),
-        React.createElement('path', { d: 'M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4' })
-      );
-
+      // Icons
       const ActivityIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
         React.createElement('path', { d: 'M22 12h-4l-3 9L9 3l-3 9H2' })
       );
-
+      const HeartIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z' })
+      );
       const UsersIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
         React.createElement('path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }),
         React.createElement('circle', { cx: '9', cy: '7', r: '4' }),
         React.createElement('path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75' })
       );
-
-      const MusicIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
-        React.createElement('path', { d: 'M9 18V5l12-2v13' }),
-        React.createElement('circle', { cx: '6', cy: '18', r: '3' }),
-        React.createElement('circle', { cx: '18', cy: '16', r: '3' })
+      const AccessibilityIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('circle', { cx: '12', cy: '4', r: '2' }),
+        React.createElement('path', { d: 'M19 13v-2a7 7 0 0 0-14 0v2M9 22V11M15 22V11' })
       );
 
-      const ChevronIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
-        React.createElement('path', { d: 'M6 9l6 6 6-6' })
-      );
+      const sectionIcons = {
+        behaviors: ActivityIcon,
+        outcomes: HeartIcon,
+        sdoh: UsersIcon,
+        disability: AccessibilityIcon,
+      };
 
-      const renderSection = function(id, config) {
-        const isExpanded = expandedSection === id;
-        const isMusic = id === 'music';
+      // Render a single metric card
+      const renderMetric = function(metricInfo, sectionId) {
+        const [label, _, metricId] = [metricInfo[0], metricInfo[1], metricInfo[2]];
+        const m = currentData.metrics ? currentData.metrics[metricId] : null;
         
-        return React.createElement('div', { 
-          className: 'section' + (isExpanded ? ' expanded' : '') + (isMusic ? ' music-section' : '')
+        if (!m) {
+          return React.createElement('div', { key: metricId, className: 'metric-card accent-' + sectionId },
+            React.createElement('div', { className: 'metric-label' }, label),
+            React.createElement('div', { className: 'metric-value placeholder' }, 'N/A'),
+            React.createElement('div', { className: 'metric-meta' }, 'Data not yet collected')
+          );
+        }
+        
+        return React.createElement('div', { key: metricId, className: 'metric-card accent-' + sectionId },
+          React.createElement('div', { className: 'metric-label' }, label),
+          React.createElement('div', { className: 'metric-value' }, m.value + m.unit),
+          React.createElement('div', { className: 'metric-meta' },
+            React.createElement('span', { className: 'ci' }, '95% CI: ' + m.low + '–' + m.high + m.unit),
+            React.createElement('span', { className: 'year' }, m.year + ' data')
+          )
+        );
+      };
+
+      // Render a section
+      const renderSection = function(section) {
+        const isExpanded = expandedSection === section.id;
+        const hasData = currentData.metrics !== null;
+        
+        return React.createElement('div', {
+          key: section.id,
+          className: 'section' + (isExpanded ? ' expanded' : '')
         },
           React.createElement('button', {
-            onClick: function() { toggleSection(id); },
+            onClick: function() { toggleSection(section.id); },
             className: 'section-trigger'
           },
-            React.createElement('div', { className: 'section-icon ' + id }, config.icon),
+            React.createElement('div', { className: 'section-icon ' + section.id }, sectionIcons[section.id]),
             React.createElement('div', { className: 'section-text' },
-              React.createElement('h3', null, config.title),
-              React.createElement('p', null, config.subtitle)
+              React.createElement('h3', null, section.title),
+              React.createElement('p', null, section.subtitle)
             ),
             React.createElement('svg', {
               className: 'section-chevron' + (isExpanded ? ' rotated' : ''),
-              viewBox: '0 0 24 24'
+              viewBox: '0 0 24 24',
+              stroke: 'currentColor',
+              fill: 'none',
+              strokeWidth: 2,
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round'
             }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
           ),
-          isExpanded && React.createElement('div', { className: 'section-content ' + id },
-            config.customContent || React.createElement('div', { className: 'empty-state' },
-              React.createElement('div', { className: 'empty-state-title' }, config.emptyTitle),
-              React.createElement('div', { className: 'empty-state-desc' }, config.emptyDesc)
-            )
+          isExpanded && React.createElement('div', { className: 'section-content' },
+            !hasData
+              ? React.createElement('div', { className: 'data-not-available' },
+                  React.createElement('strong', null, 'Data not yet available'),
+                  'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
+                )
+              : React.createElement('div', { className: 'metric-grid' },
+                  section.metrics.map(function(m) { return renderMetric(m, section.id); })
+                )
           )
         );
       };
-
-      // Helper to render a metric card with N/A placeholder
-      const metricCard = function(label, accentClass) {
-        return React.createElement('div', { className: 'metric-card ' + (accentClass || '') },
-          React.createElement('div', { className: 'metric-label' }, label),
-          React.createElement('div', { className: 'metric-value placeholder' }, 'N/A'),
-          React.createElement('div', { className: 'metric-comparison' },
-            React.createElement('span', { className: 'national' }, 'National: N/A')
-          )
-        );
-      };
-
-      // COVID section content — current status + prevention
-      const covidContent = React.createElement(React.Fragment, null,
-        React.createElement('div', { className: 'data-section-heading' }, 
-          'Current status — ' + currentData.name
-        ),
-        React.createElement('div', { className: 'metric-grid' },
-          metricCard('Active cases', 'accent-covid'),
-          metricCard('Weekly new cases', 'accent-covid'),
-          metricCard('Hospitalizations', 'accent-covid'),
-          metricCard('Vaccination rate', 'accent-covid')
-        ),
-        React.createElement('div', { className: 'data-section-heading', style: { marginTop: '1.75rem' } }, 
-          'Long COVID context'
-        ),
-        React.createElement('div', { className: 'metric-grid cols-2' },
-          metricCard('Long COVID prevalence', 'accent-covid'),
-          metricCard('Estimated cases — ' + currentData.name, 'accent-covid')
-        ),
-        React.createElement('div', { className: 'prevention-block', style: { marginTop: '1.75rem' } },
-          React.createElement('div', { className: 'prevention-header' },
-            React.createElement('h4', null, 'Prevention'),
-            React.createElement('p', null, 'Three measures with strong evidence for reducing COVID-19 transmission and severity.')
-          ),
-          React.createElement('div', { className: 'prevention-grid' },
-            React.createElement('div', { className: 'prevention-card' },
-              React.createElement('div', { className: 'prevention-card-title' }, 'Vaccination'),
-              React.createElement('p', null, 'Up-to-date COVID-19 vaccination remains the most effective tool for reducing severe illness, hospitalization, and the risk of long COVID. Boosters are recommended for everyone six months and older.'),
-              React.createElement('div', { className: 'prevention-citations' },
-                React.createElement('div', { className: 'citation-label' }, 'Studies'),
-                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
-              )
-            ),
-            React.createElement('div', { className: 'prevention-card' },
-              React.createElement('div', { className: 'prevention-card-title' }, 'Masking'),
-              React.createElement('p', null, 'Well-fitted respirators (N95, KN95, KF94) significantly reduce the risk of COVID-19 transmission, particularly in indoor and crowded settings. Source control and personal protection both contribute.'),
-              React.createElement('div', { className: 'prevention-citations' },
-                React.createElement('div', { className: 'citation-label' }, 'Studies'),
-                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
-              )
-            ),
-            React.createElement('div', { className: 'prevention-card' },
-              React.createElement('div', { className: 'prevention-card-title' }, 'Air filtration & ventilation'),
-              React.createElement('p', null, 'Improved ventilation and HEPA-grade air filtration substantially lower indoor airborne viral concentrations. Portable air cleaners and Corsi-Rosenthal boxes are accessible options for homes, classrooms, and small offices.'),
-              React.createElement('div', { className: 'prevention-citations' },
-                React.createElement('div', { className: 'citation-label' }, 'Studies'),
-                React.createElement('div', { className: 'citation-placeholder' }, 'Study links coming soon')
-              )
-            )
-          )
-        )
-      );
-
-      // Health behaviors section content
-      const behaviorsContent = React.createElement(React.Fragment, null,
-        React.createElement('div', { className: 'data-section-heading' }, 
-          currentData.name + ' resident health patterns'
-        ),
-        React.createElement('div', { className: 'metric-grid' },
-          metricCard('Meeting physical activity guidelines', 'accent-behaviors'),
-          metricCard('Adult obesity rate', 'accent-behaviors'),
-          metricCard('Adult smoking rate', 'accent-behaviors'),
-          metricCard('Frequent mental distress', 'accent-behaviors')
-        )
-      );
-
-      // SDOH section content
-      const sdohContent = React.createElement(React.Fragment, null,
-        React.createElement('div', { className: 'data-section-heading' }, 
-          'Structural factors in ' + currentData.name
-        ),
-        React.createElement('div', { className: 'metric-grid' },
-          metricCard('Below poverty line', 'accent-sdoh'),
-          metricCard('Without health insurance', 'accent-sdoh'),
-          metricCard('Food insecurity', 'accent-sdoh'),
-          metricCard('Cost-burdened renters', 'accent-sdoh')
-        ),
-        React.createElement('div', { className: 'metric-grid cols-2', style: { marginTop: '0.75rem' } },
-          metricCard('High school completion (25+)', 'accent-sdoh'),
-          metricCard('Median household income', 'accent-sdoh')
-        )
-      );
 
       // SUPPORT PAGE
       const supportPage = React.createElement('div', { className: 'support-page' },
-        React.createElement('button', { 
-          onClick: function() { setCurrentPage('home'); }, 
-          className: 'support-back' 
-        },
+        React.createElement('button', { onClick: function() { setCurrentPage('home'); }, className: 'support-back' },
           React.createElement('svg', { viewBox: '0 0 24 24' },
             React.createElement('path', { d: 'M19 12H5M12 19l-7-7 7-7' })
           ),
@@ -1344,7 +1729,7 @@
         React.createElement('h1', { className: 'support-title' }, 'Public health, freely shared.'),
         React.createElement('div', { className: 'support-body' },
           React.createElement('p', null, 'This site is a volunteer effort, built and maintained out of a sense of duty to the Kansas City community. There is no paywall, no advertising, and no institutional funding behind it.'),
-          React.createElement('p', null, 'Gathering, vetting, and translating public health data takes real time — typically several hours every two weeks, plus the ongoing work of writing, finding citations, and keeping the site current. Donations help make that work sustainable.'),
+          React.createElement('p', null, 'Gathering, vetting, and translating public health data takes real time, typically several hours every two weeks, plus the ongoing work of writing, finding citations, and keeping the site current. Donations help make that work sustainable.'),
           React.createElement('p', null, 'If you find this resource useful and you are in a position to contribute, any amount is appreciated.')
         ),
         React.createElement('div', { className: 'support-card' },
@@ -1370,103 +1755,24 @@
         )
       );
 
-      // LEARN PAGE — glossary of public health terms
+      // LEARN PAGE
       const glossaryCategories = [
-        {
-          title: 'Statistical concepts',
-          desc: 'How to read and interpret the numbers behind public health.',
-          terms: [
-            'Incidence',
-            'Prevalence',
-            'Rate (per 100,000)',
-            'Confidence interval',
-            'Age-adjusted rate',
-            'Crude rate',
-            'Relative risk',
-            'Statistical significance',
-            'Correlation vs. causation',
-            'Sample size'
-          ]
-        },
-        {
-          title: 'Disease and surveillance',
-          desc: 'Terms used to describe how diseases spread and how we track them.',
-          terms: [
-            'Communicable disease',
-            'Infectious disease',
-            'Vector-borne disease',
-            'Zoonotic disease',
-            'Endemic',
-            'Epidemic',
-            'Pandemic',
-            'Outbreak',
-            'Surveillance',
-            'Reportable / notifiable disease',
-            'Case definition',
-            'Wastewater surveillance',
-            'Contact tracing',
-            'Quarantine vs. isolation'
-          ]
-        },
-        {
-          title: 'Immunity and vaccination',
-          desc: 'Terms related to how the body fights infection and how vaccines work.',
-          terms: [
-            'Herd immunity',
-            'Vaccine efficacy vs. effectiveness',
-            'Booster',
-            'Up-to-date vaccination',
-            'Immunocompromised',
-            'Antibody',
-            'mRNA vaccine'
-          ]
-        },
-        {
-          title: 'Health equity and population health',
-          desc: 'Concepts about how health is distributed across communities.',
-          terms: [
-            'Social determinants of health',
-            'Health equity',
-            'Health equality',
-            'Health disparity',
-            'Population health',
-            'Community health',
-            'Cost-burdened (housing)',
-            'Food insecurity',
-            'Structural inequity'
-          ]
-        },
-        {
-          title: 'COVID-19 specific',
-          desc: 'Terms that come up frequently in COVID-19 reporting and research.',
-          terms: [
-            'Long COVID (PASC)',
-            'SARS-CoV-2',
-            'Variant',
-            'Reinfection',
-            'Asymptomatic transmission',
-            'Post-acute sequelae'
-          ]
-        },
-        {
-          title: 'Risk and prevention',
-          desc: 'How public health frames protection, risk, and intervention.',
-          terms: [
-            'Risk factor',
-            'Protective factor',
-            'Primary / secondary / tertiary prevention',
-            'Modifiable risk',
-            'Source control',
-            'Mitigation'
-          ]
-        }
+        { title: 'Statistical concepts', desc: 'How to read and interpret the numbers behind public health.',
+          terms: ['Incidence', 'Prevalence', 'Rate (per 100,000)', 'Confidence interval', 'Age-adjusted rate', 'Crude rate', 'Relative risk', 'Statistical significance', 'Correlation vs. causation', 'Sample size'] },
+        { title: 'Disease and surveillance', desc: 'Terms used to describe how diseases spread and how we track them.',
+          terms: ['Communicable disease', 'Infectious disease', 'Vector-borne disease', 'Zoonotic disease', 'Endemic', 'Epidemic', 'Pandemic', 'Outbreak', 'Surveillance', 'Reportable / notifiable disease', 'Case definition', 'Wastewater surveillance', 'Contact tracing', 'Quarantine vs. isolation'] },
+        { title: 'Immunity and vaccination', desc: 'Terms related to how the body fights infection and how vaccines work.',
+          terms: ['Herd immunity', 'Vaccine efficacy vs. effectiveness', 'Booster', 'Up-to-date vaccination', 'Immunocompromised', 'Antibody', 'mRNA vaccine'] },
+        { title: 'Health equity and population health', desc: 'Concepts about how health is distributed across communities.',
+          terms: ['Social determinants of health', 'Health equity', 'Health equality', 'Health disparity', 'Population health', 'Community health', 'Cost-burdened (housing)', 'Food insecurity', 'Structural inequity'] },
+        { title: 'COVID-19 specific', desc: 'Terms that come up frequently in COVID-19 reporting and research.',
+          terms: ['Long COVID (PASC)', 'SARS-CoV-2', 'Variant', 'Reinfection', 'Asymptomatic transmission', 'Post-acute sequelae'] },
+        { title: 'Risk and prevention', desc: 'How public health frames protection, risk, and intervention.',
+          terms: ['Risk factor', 'Protective factor', 'Primary / secondary / tertiary prevention', 'Modifiable risk', 'Source control', 'Mitigation'] }
       ];
 
       const learnPage = React.createElement('div', { className: 'learn-page' },
-        React.createElement('button', {
-          onClick: function() { setCurrentPage('home'); },
-          className: 'support-back'
-        },
+        React.createElement('button', { onClick: function() { setCurrentPage('home'); }, className: 'support-back' },
           React.createElement('svg', { viewBox: '0 0 24 24' },
             React.createElement('path', { d: 'M19 12H5M12 19l-7-7 7-7' })
           ),
@@ -1477,13 +1783,13 @@
           React.createElement('h1', { className: 'learn-title' }, 'A working vocabulary for public health.'),
           React.createElement('p', { className: 'learn-subtitle' }, 'Reading public health information requires knowing the terms it uses. This is a growing reference of the concepts that come up most often in news coverage, research, and on this site itself.')
         ),
-        glossaryCategories.map(function(category, catIdx) {
-          return React.createElement('div', { key: catIdx, className: 'glossary-category' },
-            React.createElement('h2', { className: 'glossary-category-header' }, category.title),
-            React.createElement('p', { className: 'glossary-category-desc' }, category.desc),
+        glossaryCategories.map(function(cat, i) {
+          return React.createElement('div', { key: i, className: 'glossary-category' },
+            React.createElement('h2', { className: 'glossary-category-header' }, cat.title),
+            React.createElement('p', { className: 'glossary-category-desc' }, cat.desc),
             React.createElement('div', { className: 'glossary-list' },
-              category.terms.map(function(term, termIdx) {
-                return React.createElement('div', { key: termIdx, className: 'glossary-entry' },
+              cat.terms.map(function(term, j) {
+                return React.createElement('div', { key: j, className: 'glossary-entry' },
                   React.createElement('div', { className: 'glossary-term' }, term),
                   React.createElement('div', { className: 'glossary-definition empty' }, 'Definition coming soon')
                 );
@@ -1497,126 +1803,9 @@
         )
       );
 
-      // Render support page if active
-      if (currentPage === 'support') {
-        return React.createElement(React.Fragment, null,
-          React.createElement('header', { className: 'header' },
-            React.createElement('div', { className: 'header-inner' },
-              React.createElement('div', { className: 'header-top' },
-                React.createElement('div', { className: 'brand' },
-                  React.createElement('h1', null, 'KC Public Health'),
-                  React.createElement('div', { className: 'tagline' }, 'Data · Interpretation · Community')
-                ),
-                React.createElement('div', { className: 'header-buttons' },
-                  React.createElement('button', { 
-                    onClick: function() { setCurrentPage('home'); setShowFeedbackModal(true); }, 
-                    className: 'btn btn-ghost' 
-                  }, 'Feedback'),
-                  React.createElement('button', { 
-                    onClick: function() { setCurrentPage('learn'); }, 
-                    className: 'btn btn-ghost' 
-                  }, 'Learn'),
-                  React.createElement('button', { 
-                    className: 'btn btn-primary btn-disabled', 
-                    disabled: true 
-                  }, 'Blog — coming soon')
-                )
-              )
-            )
-          ),
-          supportPage
-        );
-      }
-
-      // Render learn page if active
-      if (currentPage === 'learn') {
-        return React.createElement(React.Fragment, null,
-          React.createElement('header', { className: 'header' },
-            React.createElement('div', { className: 'header-inner' },
-              React.createElement('div', { className: 'header-top' },
-                React.createElement('div', { className: 'brand' },
-                  React.createElement('h1', null, 'KC Public Health'),
-                  React.createElement('div', { className: 'tagline' }, 'Data · Interpretation · Community')
-                ),
-                React.createElement('div', { className: 'header-buttons' },
-                  React.createElement('button', { 
-                    onClick: function() { setCurrentPage('home'); setShowFeedbackModal(true); }, 
-                    className: 'btn btn-ghost' 
-                  }, 'Feedback'),
-                  React.createElement('button', { 
-                    onClick: function() { setCurrentPage('support'); }, 
-                    className: 'btn btn-ghost' 
-                  }, 'Support'),
-                  React.createElement('button', { 
-                    className: 'btn btn-primary btn-disabled', 
-                    disabled: true 
-                  }, 'Blog — coming soon')
-                )
-              )
-            )
-          ),
-          learnPage
-        );
-      }
-
-      return React.createElement(React.Fragment, null,
-        // Modal
-        showFeedbackModal && React.createElement('div', { className: 'modal-backdrop' },
-          React.createElement('div', { className: 'modal' },
-            React.createElement('h3', null, 'Share your feedback'),
-            React.createElement('p', { className: 'subtitle' }, 'Help us improve this resource. All submissions are private and reviewed directly by our team.'),
-            React.createElement('form', { onSubmit: handleFeedbackSubmit },
-              React.createElement('div', { className: 'form-group' },
-                React.createElement('label', null, 'Name'),
-                React.createElement('input', { 
-                  type: 'text', name: 'name', value: feedbackForm.name, 
-                  onChange: handleFeedbackChange, placeholder: 'Your name (optional)' 
-                })
-              ),
-              React.createElement('div', { className: 'form-group' },
-                React.createElement('label', null, 'Email'),
-                React.createElement('input', { 
-                  type: 'email', name: 'email', value: feedbackForm.email, 
-                  onChange: handleFeedbackChange, required: true, placeholder: 'your@email.com' 
-                })
-              ),
-              React.createElement('div', { className: 'form-group' },
-                React.createElement('label', null, 'Category'),
-                React.createElement('select', { 
-                  name: 'category', value: feedbackForm.category, onChange: handleFeedbackChange 
-                },
-                  React.createElement('option', { value: 'suggestion' }, 'Suggestion'),
-                  React.createElement('option', { value: 'bug' }, 'Report a bug'),
-                  React.createElement('option', { value: 'data' }, 'Data issue'),
-                  React.createElement('option', { value: 'topic' }, 'Topic request'),
-                  React.createElement('option', { value: 'other' }, 'Other')
-                )
-              ),
-              React.createElement('div', { className: 'form-group' },
-                React.createElement('label', null, 'Message'),
-                React.createElement('textarea', { 
-                  name: 'message', value: feedbackForm.message, 
-                  onChange: handleFeedbackChange, required: true, 
-                  placeholder: 'Tell us what you think...' 
-                })
-              ),
-              React.createElement('div', { className: 'privacy-note' },
-                'Your feedback is private and will only be reviewed by the KC Public Health team.'
-              ),
-              React.createElement('div', { className: 'modal-buttons' },
-                React.createElement('button', { type: 'submit', className: 'btn-submit' }, 'Send feedback'),
-                React.createElement('button', { 
-                  type: 'button', 
-                  onClick: function() { setShowFeedbackModal(false); }, 
-                  className: 'btn-cancel' 
-                }, 'Cancel')
-              )
-            )
-          )
-        ),
-        
-        // Header
-        React.createElement('header', { className: 'header' },
+      // Header used on every page
+      const renderHeader = function(includeFilter) {
+        return React.createElement('header', { className: 'header' },
           React.createElement('div', { className: 'header-inner' },
             React.createElement('div', { className: 'header-top' },
               React.createElement('div', { className: 'brand' },
@@ -1624,30 +1813,15 @@
                 React.createElement('div', { className: 'tagline' }, 'Data · Interpretation · Community')
               ),
               React.createElement('div', { className: 'header-buttons' },
-                React.createElement('button', { 
-                  onClick: function() { setShowFeedbackModal(true); }, 
-                  className: 'btn btn-ghost' 
-                }, 'Feedback'),
-                React.createElement('button', { 
-                  onClick: function() { setCurrentPage('learn'); }, 
-                  className: 'btn btn-ghost' 
-                }, 'Learn'),
-                React.createElement('button', { 
-                  onClick: function() { setCurrentPage('support'); }, 
-                  className: 'btn btn-ghost' 
-                }, 'Support'),
-                React.createElement('button', { 
-                  className: 'btn btn-primary btn-disabled', 
-                  disabled: true 
-                }, 'Blog — coming soon')
+                React.createElement('button', { onClick: function() { setShowFeedbackModal(true); }, className: 'btn btn-ghost' }, 'Feedback'),
+                React.createElement('button', { onClick: function() { setCurrentPage('learn'); }, className: 'btn btn-ghost' }, 'Learn'),
+                React.createElement('button', { onClick: function() { setCurrentPage('support'); }, className: 'btn btn-ghost' }, 'Support'),
+                React.createElement('button', { className: 'btn btn-primary btn-disabled', disabled: true }, 'Blog — coming soon')
               )
             ),
-            React.createElement('div', { className: 'location-filter' },
+            includeFilter && React.createElement('div', { className: 'location-filter' },
               React.createElement('span', { className: 'location-filter-label' }, 'Viewing'),
-              React.createElement('select', { 
-                value: selectedLocation, 
-                onChange: function(e) { setSelectedLocation(e.target.value); } 
-              },
+              React.createElement('select', { value: selectedLocation, onChange: function(e) { setSelectedLocation(e.target.value); } },
                 React.createElement('optgroup', { label: 'KC Metro counties' },
                   React.createElement('option', { value: 'jackson-mo' }, 'Jackson County, MO'),
                   React.createElement('option', { value: 'clay-mo' }, 'Clay County, MO'),
@@ -1665,64 +1839,90 @@
               React.createElement('span', { className: 'region' }, currentData.region)
             )
           )
-        ),
-        
-        // Main content
+        );
+      };
+
+      // FEEDBACK MODAL
+      const feedbackModal = showFeedbackModal && React.createElement('div', { className: 'modal-backdrop' },
+        React.createElement('div', { className: 'modal' },
+          React.createElement('h3', null, 'Share your feedback'),
+          React.createElement('p', { className: 'subtitle' }, 'Help us improve this resource. All submissions are private and reviewed directly by our team.'),
+          React.createElement('form', { onSubmit: handleFeedbackSubmit },
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Name'),
+              React.createElement('input', { type: 'text', name: 'name', value: feedbackForm.name, onChange: handleFeedbackChange, placeholder: 'Your name (optional)' })
+            ),
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Email'),
+              React.createElement('input', { type: 'email', name: 'email', value: feedbackForm.email, onChange: handleFeedbackChange, required: true, placeholder: 'your@email.com' })
+            ),
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Category'),
+              React.createElement('select', { name: 'category', value: feedbackForm.category, onChange: handleFeedbackChange },
+                React.createElement('option', { value: 'suggestion' }, 'Suggestion'),
+                React.createElement('option', { value: 'bug' }, 'Report a bug'),
+                React.createElement('option', { value: 'data' }, 'Data issue'),
+                React.createElement('option', { value: 'topic' }, 'Topic request'),
+                React.createElement('option', { value: 'other' }, 'Other')
+              )
+            ),
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Message'),
+              React.createElement('textarea', { name: 'message', value: feedbackForm.message, onChange: handleFeedbackChange, required: true, placeholder: 'Tell us what you think...' })
+            ),
+            React.createElement('div', { className: 'privacy-note' },
+              'Your feedback is private and will only be reviewed by the KC Public Health team.'
+            ),
+            React.createElement('div', { className: 'modal-buttons' },
+              React.createElement('button', { type: 'submit', className: 'btn-submit' }, 'Send feedback'),
+              React.createElement('button', { type: 'button', onClick: function() { setShowFeedbackModal(false); }, className: 'btn-cancel' }, 'Cancel')
+            )
+          )
+        )
+      );
+
+      // Render the right page
+      if (currentPage === 'support') {
+        return React.createElement(React.Fragment, null, feedbackModal, renderHeader(false), supportPage);
+      }
+      if (currentPage === 'learn') {
+        return React.createElement(React.Fragment, null, feedbackModal, renderHeader(false), learnPage);
+      }
+
+      // HOME PAGE
+      return React.createElement(React.Fragment, null,
+        feedbackModal,
+        renderHeader(true),
         React.createElement('div', { className: 'main' },
           React.createElement('div', { className: 'intro' },
             React.createElement('h2', null, 'Public health information, made accessible.'),
             React.createElement('p', null, 'This site exists to give Kansas City residents a convenient place to understand the health of their community, gathering relevant local data and translating it into plain language. The goal is interpretation, not analysis: making public health information accessible without requiring readers to navigate complex government websites or specialized terminology.')
           ),
-          
+          React.createElement('div', { className: 'source-banner' },
+            React.createElement('strong', null, 'Data source: '),
+            'Health behaviors, outcomes, social determinants, and disability metrics are from ',
+            React.createElement('a', { href: HEALTH_DATA.source.url, target: '_blank', rel: 'noopener' }, HEALTH_DATA.source.name),
+            '. ', HEALTH_DATA.source.methodology, ' All values shown are crude prevalence among adults from the most recent release.'
+          ),
           React.createElement('div', { className: 'sections' },
-            renderSection('covid', {
-              title: 'COVID-19 — an ongoing pandemic',
-              subtitle: 'Current transmission, long COVID, and what you need to know',
-              icon: VirusIcon,
-              customContent: covidContent
-            }),
-            renderSection('behaviors', {
-              title: 'Health behaviors',
-              subtitle: 'Physical activity, smoking, obesity, mental health',
-              icon: ActivityIcon,
-              customContent: behaviorsContent
-            }),
-            renderSection('sdoh', {
-              title: 'Social determinants of health',
-              subtitle: 'The structural factors shaping community health',
-              icon: UsersIcon,
-              customContent: sdohContent
-            }),
-            renderSection('music', {
-              title: 'Featured KC artists',
-              subtitle: 'A rotating playlist of local musicians',
-              icon: MusicIcon,
-              emptyTitle: 'Playlist being curated',
-              emptyDesc: 'Featured Kansas City artists and streaming links will appear here soon.'
-            })
+            sections.map(renderSection)
           )
         ),
-        
-        // About section
         React.createElement('div', { className: 'about' },
           React.createElement('div', { className: 'about-inner' },
             React.createElement('div', { className: 'about-avatar' }, 'BL'),
             React.createElement('div', { className: 'about-content' },
               React.createElement('h3', null, 'Benjamin Leifer'),
-              React.createElement('div', { className: 'credentials' }, 'MA · MPH'),
-              React.createElement('p', null, 
-                'Benjamin Leifer is a Kansas City–based public health researcher. He holds an MA in Biology from the University of Missouri–Kansas City and an MPH with an epidemiology focus from the University of Kansas. His academic interests include Long COVID, chronic disease and disability, the social determinants of health, and the interaction between policy and health outcomes.'
-              )
+              React.createElement('div', { className: 'credentials' }, 'MA · MPH')
             )
           )
         ),
-        
-        // Footer
         React.createElement('footer', { className: 'footer' },
           React.createElement('div', { className: 'footer-inner' },
             React.createElement('p', null, 
               'An independent public health resource for Kansas City. ',
-              'This site provides general health information — for medical advice, consult a healthcare provider.'
+              'This site provides general health information; for medical advice, consult a healthcare provider. ',
+              'Data current as of ', new Date(HEALTH_DATA.lastUpdated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), '.'
             )
           )
         )
