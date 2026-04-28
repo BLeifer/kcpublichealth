@@ -825,14 +825,18 @@
 
     const App = () => {
       const [expandedSection, setExpandedSection] = useState(null);
-      const [selectedLocation, setSelectedLocation] = useState('kc-metro');
+      const [selectedLocation, setSelectedLocation] = useState('jackson-mo');
       const [showFeedbackModal, setShowFeedbackModal] = useState(false);
       const [feedbackForm, setFeedbackForm] = useState({ name: '', email: '', message: '', category: 'suggestion' });
 
       const locations = {
-        'kc-metro': { name: 'Kansas City Metro', region: 'Jackson County, MO & surrounding counties' },
-        'jackson-county': { name: 'Jackson County', region: 'Jackson County, Missouri' },
-        'missouri': { name: 'Missouri', region: 'State of Missouri' }
+        'jackson-mo': { name: 'Jackson County, MO', region: 'Missouri · KC core' },
+        'clay-mo': { name: 'Clay County, MO', region: 'Missouri · north of the river' },
+        'johnson-ks': { name: 'Johnson County, KS', region: 'Kansas · southwest metro' },
+        'wyandotte-ks': { name: 'Wyandotte County, KS', region: 'Kansas · KCK and surrounding' },
+        'missouri': { name: 'Missouri', region: 'State of Missouri' },
+        'kansas': { name: 'Kansas', region: 'State of Kansas' },
+        'national': { name: 'United States', region: 'National figures for comparison' }
       };
 
       const currentData = locations[selectedLocation];
@@ -1085,9 +1089,19 @@
                 value: selectedLocation, 
                 onChange: function(e) { setSelectedLocation(e.target.value); } 
               },
-                React.createElement('option', { value: 'kc-metro' }, 'Kansas City Metro'),
-                React.createElement('option', { value: 'jackson-county' }, 'Jackson County'),
-                React.createElement('option', { value: 'missouri' }, 'Missouri')
+                React.createElement('optgroup', { label: 'KC Metro counties' },
+                  React.createElement('option', { value: 'jackson-mo' }, 'Jackson County, MO'),
+                  React.createElement('option', { value: 'clay-mo' }, 'Clay County, MO'),
+                  React.createElement('option', { value: 'johnson-ks' }, 'Johnson County, KS'),
+                  React.createElement('option', { value: 'wyandotte-ks' }, 'Wyandotte County, KS')
+                ),
+                React.createElement('optgroup', { label: 'States' },
+                  React.createElement('option', { value: 'missouri' }, 'Missouri'),
+                  React.createElement('option', { value: 'kansas' }, 'Kansas')
+                ),
+                React.createElement('optgroup', { label: 'National' },
+                  React.createElement('option', { value: 'national' }, 'United States')
+                )
               ),
               React.createElement('span', { className: 'region' }, currentData.region)
             )
