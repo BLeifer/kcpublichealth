@@ -1370,6 +1370,133 @@
         )
       );
 
+      // LEARN PAGE — glossary of public health terms
+      const glossaryCategories = [
+        {
+          title: 'Statistical concepts',
+          desc: 'How to read and interpret the numbers behind public health.',
+          terms: [
+            'Incidence',
+            'Prevalence',
+            'Rate (per 100,000)',
+            'Confidence interval',
+            'Age-adjusted rate',
+            'Crude rate',
+            'Relative risk',
+            'Statistical significance',
+            'Correlation vs. causation',
+            'Sample size'
+          ]
+        },
+        {
+          title: 'Disease and surveillance',
+          desc: 'Terms used to describe how diseases spread and how we track them.',
+          terms: [
+            'Communicable disease',
+            'Infectious disease',
+            'Vector-borne disease',
+            'Zoonotic disease',
+            'Endemic',
+            'Epidemic',
+            'Pandemic',
+            'Outbreak',
+            'Surveillance',
+            'Reportable / notifiable disease',
+            'Case definition',
+            'Wastewater surveillance',
+            'Contact tracing',
+            'Quarantine vs. isolation'
+          ]
+        },
+        {
+          title: 'Immunity and vaccination',
+          desc: 'Terms related to how the body fights infection and how vaccines work.',
+          terms: [
+            'Herd immunity',
+            'Vaccine efficacy vs. effectiveness',
+            'Booster',
+            'Up-to-date vaccination',
+            'Immunocompromised',
+            'Antibody',
+            'mRNA vaccine'
+          ]
+        },
+        {
+          title: 'Health equity and population health',
+          desc: 'Concepts about how health is distributed across communities.',
+          terms: [
+            'Social determinants of health',
+            'Health equity',
+            'Health equality',
+            'Health disparity',
+            'Population health',
+            'Community health',
+            'Cost-burdened (housing)',
+            'Food insecurity',
+            'Structural inequity'
+          ]
+        },
+        {
+          title: 'COVID-19 specific',
+          desc: 'Terms that come up frequently in COVID-19 reporting and research.',
+          terms: [
+            'Long COVID (PASC)',
+            'SARS-CoV-2',
+            'Variant',
+            'Reinfection',
+            'Asymptomatic transmission',
+            'Post-acute sequelae'
+          ]
+        },
+        {
+          title: 'Risk and prevention',
+          desc: 'How public health frames protection, risk, and intervention.',
+          terms: [
+            'Risk factor',
+            'Protective factor',
+            'Primary / secondary / tertiary prevention',
+            'Modifiable risk',
+            'Source control',
+            'Mitigation'
+          ]
+        }
+      ];
+
+      const learnPage = React.createElement('div', { className: 'learn-page' },
+        React.createElement('button', {
+          onClick: function() { setCurrentPage('home'); },
+          className: 'support-back'
+        },
+          React.createElement('svg', { viewBox: '0 0 24 24' },
+            React.createElement('path', { d: 'M19 12H5M12 19l-7-7 7-7' })
+          ),
+          'Back to dashboard'
+        ),
+        React.createElement('div', { className: 'learn-intro' },
+          React.createElement('div', { className: 'learn-eyebrow' }, 'Learn'),
+          React.createElement('h1', { className: 'learn-title' }, 'A working vocabulary for public health.'),
+          React.createElement('p', { className: 'learn-subtitle' }, 'Reading public health information requires knowing the terms it uses. This is a growing reference of the concepts that come up most often in news coverage, research, and on this site itself.')
+        ),
+        glossaryCategories.map(function(category, catIdx) {
+          return React.createElement('div', { key: catIdx, className: 'glossary-category' },
+            React.createElement('h2', { className: 'glossary-category-header' }, category.title),
+            React.createElement('p', { className: 'glossary-category-desc' }, category.desc),
+            React.createElement('div', { className: 'glossary-list' },
+              category.terms.map(function(term, termIdx) {
+                return React.createElement('div', { key: termIdx, className: 'glossary-entry' },
+                  React.createElement('div', { className: 'glossary-term' }, term),
+                  React.createElement('div', { className: 'glossary-definition empty' }, 'Definition coming soon')
+                );
+              })
+            )
+          );
+        }),
+        React.createElement('div', { className: 'learn-footer-note' },
+          React.createElement('strong', null, 'Note: '),
+          'This glossary is a work in progress. Definitions are being researched, written, and sourced from authoritative references such as the CDC, WHO, and peer-reviewed literature. If you spot a term you would like added or want to suggest a clearer definition, use the feedback form.'
+        )
+      );
+
       // Render support page if active
       if (currentPage === 'support') {
         return React.createElement(React.Fragment, null,
