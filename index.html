@@ -41,6 +41,9 @@
       
       --disability-bg: #e6d4e8;
       --disability-accent: #6b2d6b;
+      
+      --airborne-bg: #fde7d4;
+      --airborne-accent: #b15a14;
     }
 
     body {
@@ -76,20 +79,52 @@
       gap: 1rem;
     }
 
-    .brand h1 {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 1.875rem;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      line-height: 1;
+    .brand {
+      display: inline-block;
+      position: relative;
+      padding: 1.25rem 1.75rem 1rem;
+      border-radius: 10px;
+      background: var(--ink);
+      overflow: hidden;
     }
 
-    .brand .tagline {
-      font-size: 0.8125rem;
-      color: var(--ink-muted);
-      margin-top: 0.375rem;
-      letter-spacing: 0.02em;
+    .brand-skyline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 70%;
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    .brand-skyline svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .brand-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-title {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--surface-pure);
+      letter-spacing: -0.025em;
+      line-height: 0.95;
+    }
+
+    .brand-tagline {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 0.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
     }
 
     .header-buttons {
@@ -302,6 +337,7 @@
     .section-icon.outcomes { background: var(--outcomes-bg); color: var(--outcomes-accent); }
     .section-icon.sdoh { background: var(--sdoh-bg); color: var(--sdoh-accent); }
     .section-icon.disability { background: var(--disability-bg); color: var(--disability-accent); }
+    .section-icon.airborne { background: var(--airborne-bg); color: var(--airborne-accent); }
 
     .section-icon svg {
       width: 22px;
@@ -372,6 +408,7 @@
     .metric-card.accent-outcomes { border-top: 3px solid var(--outcomes-accent); }
     .metric-card.accent-sdoh { border-top: 3px solid var(--sdoh-accent); }
     .metric-card.accent-disability { border-top: 3px solid var(--disability-accent); }
+    .metric-card.accent-airborne { border-top: 3px solid var(--airborne-accent); }
 
     .metric-label {
       font-size: 0.7rem;
@@ -849,7 +886,9 @@
       .section-icon svg { width: 18px; height: 18px; }
       .section-text h3 { font-size: 1.0625rem; }
       .intro h2 { font-size: 1.625rem; }
-      .brand h1 { font-size: 1.5rem; }
+      .brand { padding: 1rem 1.25rem 0.875rem; }
+      .brand-title { font-size: 1.625rem; }
+      .brand-tagline { font-size: 0.625rem; margin-top: 0.375rem; }
       .about-inner { padding: 1.5rem; grid-template-columns: 1fr; gap: 1rem; }
       .support-title, .learn-title { font-size: 1.875rem; }
     }
@@ -1476,6 +1515,53 @@
   },
   "sections": [
     {
+      "id": "airborne",
+      "title": "Airborne respiratory illness",
+      "subtitle": "COVID-19, influenza, and RSV transmission and protection",
+      "metrics": [
+        [
+          "COVID-19 weekly cases",
+          null,
+          "covid_cases"
+        ],
+        [
+          "COVID-19 hospitalizations",
+          null,
+          "covid_hospitalizations"
+        ],
+        [
+          "COVID-19 wastewater activity",
+          null,
+          "covid_wastewater"
+        ],
+        [
+          "COVID-19 up-to-date vaccination",
+          null,
+          "covid_vaccination"
+        ],
+        [
+          "Influenza activity level",
+          null,
+          "flu_activity"
+        ],
+        [
+          "Influenza test positivity",
+          null,
+          "flu_positivity"
+        ],
+        [
+          "Seasonal flu vaccination rate",
+          null,
+          "flu_vaccination"
+        ],
+        [
+          "RSV activity level",
+          null,
+          "rsv_activity"
+        ]
+      ]
+    },
+    {
       "id": "behaviors",
       "title": "Health behaviors",
       "subtitle": "Risk behaviors and mental health among adults",
@@ -1652,8 +1738,13 @@
         React.createElement('circle', { cx: '12', cy: '4', r: '2' }),
         React.createElement('path', { d: 'M19 13v-2a7 7 0 0 0-14 0v2M9 22V11M15 22V11' })
       );
+      const AirborneIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M12 2v20M6 8c0-2 2-4 6-4s6 2 6 4v6c0 4-3 6-6 6s-6-2-6-6V8z' }),
+        React.createElement('path', { d: 'M6 11h12' })
+      );
 
       const sectionIcons = {
+        airborne: AirborneIcon,
         behaviors: ActivityIcon,
         outcomes: HeartIcon,
         sdoh: UsersIcon,
@@ -1686,7 +1777,10 @@
       // Render a section
       const renderSection = function(section) {
         const isExpanded = expandedSection === section.id;
-        const hasData = currentData.metrics !== null;
+        const isAirborne = section.id === 'airborne';
+        const hasPlacesData = currentData.metrics !== null;
+        // Airborne always shows its grid (with N/A cards). PLACES sections only show grid if we have data.
+        const showGrid = isAirborne || hasPlacesData;
         
         return React.createElement('div', {
           key: section.id,
@@ -1712,7 +1806,7 @@
             }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
           ),
           isExpanded && React.createElement('div', { className: 'section-content' },
-            !hasData
+            !showGrid
               ? React.createElement('div', { className: 'data-not-available' },
                   React.createElement('strong', null, 'Data not yet available'),
                   'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
@@ -1816,8 +1910,66 @@
           React.createElement('div', { className: 'header-inner' },
             React.createElement('div', { className: 'header-top' },
               React.createElement('div', { className: 'brand' },
-                React.createElement('h1', null, 'KC Public Health'),
-                React.createElement('div', { className: 'tagline' }, 'Data · Interpretation · Community')
+                React.createElement('div', { className: 'brand-skyline' },
+                  React.createElement('svg', { viewBox: '0 0 600 100', preserveAspectRatio: 'none' },
+                    React.createElement('g', { fill: '#f97316' },
+                      // Liberty Memorial - tall column with flame
+                      React.createElement('path', { d: 'M0,100 L0,75 L15,75 L15,72 L20,72 L20,68 L25,68 L25,40 L23,40 L23,30 L25,28 L27,30 L27,40 L30,40 L30,68 L32,68 L32,72 L35,72 L35,75 L50,75 L50,100 Z' }),
+                      // Foreground low buildings
+                      React.createElement('path', { d: 'M50,100 L50,82 L75,82 L75,78 L100,78 L100,85 L125,85 L125,100 Z' }),
+                      // Kauffman Center curves
+                      React.createElement('path', { d: 'M125,100 L125,72 Q140,55 158,68 Q165,72 168,72 Q170,55 188,62 Q200,68 200,72 L200,100 Z' }),
+                      // Mid building
+                      React.createElement('path', { d: 'M200,100 L200,68 L215,68 L215,55 L218,55 L218,68 L228,68 L228,100 Z' }),
+                      // Bartle Hall pylons (4 spires with circular tops)
+                      React.createElement('rect', { x: '232', y: '35', width: '3', height: '65' }),
+                      React.createElement('circle', { cx: '233.5', cy: '32', r: '4', fill: 'none', stroke: '#f97316', strokeWidth: '1.2' }),
+                      React.createElement('line', { x1: '230', y1: '32', x2: '237', y2: '32', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('line', { x1: '233.5', y1: '28.5', x2: '233.5', y2: '35.5', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('rect', { x: '244', y: '35', width: '3', height: '65' }),
+                      React.createElement('circle', { cx: '245.5', cy: '32', r: '4', fill: 'none', stroke: '#f97316', strokeWidth: '1.2' }),
+                      React.createElement('line', { x1: '242', y1: '32', x2: '249', y2: '32', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('line', { x1: '245.5', y1: '28.5', x2: '245.5', y2: '35.5', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('rect', { x: '256', y: '35', width: '3', height: '65' }),
+                      React.createElement('circle', { cx: '257.5', cy: '32', r: '4', fill: 'none', stroke: '#f97316', strokeWidth: '1.2' }),
+                      React.createElement('line', { x1: '254', y1: '32', x2: '261', y2: '32', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('line', { x1: '257.5', y1: '28.5', x2: '257.5', y2: '35.5', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('rect', { x: '268', y: '35', width: '3', height: '65' }),
+                      React.createElement('circle', { cx: '269.5', cy: '32', r: '4', fill: 'none', stroke: '#f97316', strokeWidth: '1.2' }),
+                      React.createElement('line', { x1: '266', y1: '32', x2: '273', y2: '32', stroke: '#f97316', strokeWidth: '0.8' }),
+                      React.createElement('line', { x1: '269.5', y1: '28.5', x2: '269.5', y2: '35.5', stroke: '#f97316', strokeWidth: '0.8' }),
+                      // Bartle Hall main structure
+                      React.createElement('path', { d: 'M228,100 L228,75 L280,75 L280,100 Z' }),
+                      // Building between
+                      React.createElement('path', { d: 'M280,100 L280,70 L300,70 L300,100 Z' }),
+                      // Power & Light Building
+                      React.createElement('path', { d: 'M300,100 L300,28 L302,28 L302,22 L308,22 L308,18 L313,18 L313,15 L317,15 L317,8 L319,8 L319,4 L321,4 L321,0 L323,0 L323,4 L325,4 L325,8 L327,8 L327,15 L331,15 L331,18 L336,18 L336,22 L342,22 L342,28 L344,28 L344,100 Z' }),
+                      // Mid building
+                      React.createElement('path', { d: 'M344,100 L344,55 L360,55 L360,100 Z' }),
+                      // Town Pavilion
+                      React.createElement('path', { d: 'M360,100 L360,30 L388,30 L388,100 Z' }),
+                      // Mid building
+                      React.createElement('path', { d: 'M388,100 L388,60 L404,60 L404,100 Z' }),
+                      // One Kansas City Place with antenna
+                      React.createElement('path', { d: 'M404,100 L404,25 L408,25 L408,20 L432,20 L432,25 L436,25 L436,100 Z' }),
+                      React.createElement('line', { x1: '420', y1: '20', x2: '420', y2: '2', stroke: '#f97316', strokeWidth: '2' }),
+                      React.createElement('circle', { cx: '420', cy: '2', r: '1.5' }),
+                      // Commerce Tower
+                      React.createElement('path', { d: 'M436,100 L436,52 L440,52 L440,42 L460,42 L460,52 L464,52 L464,100 Z' }),
+                      // Mid building
+                      React.createElement('path', { d: 'M464,100 L464,68 L478,68 L478,100 Z' }),
+                      // City Hall
+                      React.createElement('path', { d: 'M478,100 L478,40 L482,40 L482,36 L488,36 L488,32 L492,32 L492,30 L494,30 L494,32 L498,32 L498,36 L504,36 L504,40 L508,40 L508,100 Z' }),
+                      // Foreground
+                      React.createElement('path', { d: 'M508,100 L508,72 L530,72 L530,78 L555,78 L555,82 L580,82 L580,100 Z' }),
+                      React.createElement('path', { d: 'M580,100 L580,78 L600,78 L600,100 Z' })
+                    )
+                  )
+                ),
+                React.createElement('div', { className: 'brand-text' },
+                  React.createElement('div', { className: 'brand-title' }, 'KC Public Health'),
+                  React.createElement('div', { className: 'brand-tagline' }, 'Data · Interpretation · Community')
+                )
               ),
               React.createElement('div', { className: 'header-buttons' },
                 React.createElement('button', { onClick: function() { setShowFeedbackModal(true); }, className: 'btn btn-ghost' }, 'Feedback'),
