@@ -229,22 +229,6 @@
       font-weight: 400;
     }
 
-    /* DATA SOURCE BANNER */
-    .source-banner {
-      background: white;
-      border: 1.5px solid black;
-      border-radius: 4px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.8125rem;
-      color: var(--ink-soft);
-      line-height: 1.55;
-    }
-
-    .source-banner strong { color: black; font-weight: 700; }
-    .source-banner a { color: var(--accent); text-decoration: none; font-weight: 700; }
-    .source-banner a:hover { text-decoration: underline; }
-
     .data-not-available {
       background: var(--bg-soft);
       border: 2px dashed black;
@@ -874,6 +858,131 @@
       color: rgba(255, 255, 255, 0.55);
     }
 
+
+    /* CITATION CHIPS (next to section header) */
+    .section-text h3 {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .citation-group {
+      display: inline-flex;
+      gap: 0.125rem;
+      vertical-align: super;
+      line-height: 1;
+      position: relative;
+      top: -0.4em;
+    }
+
+    .citation-link {
+      display: inline-block;
+      padding: 0.125rem 0.3rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--line-soft);
+      border-radius: 3px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    .citation-link:hover {
+      background: black;
+      color: white;
+      border-color: black;
+    }
+
+    /* SOURCES BLOCK (compact, sits below all metrics) */
+    .sources-block {
+      margin-top: 2rem;
+      background: white;
+      border: 2px solid black;
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .sources-block-header {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: black;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.625rem;
+      border-bottom: 1.5px solid black;
+    }
+
+    .source-entry {
+      display: grid;
+      grid-template-columns: 1.5rem 1fr;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--line-soft);
+      align-items: baseline;
+      transition: background 1.5s ease-out;
+    }
+
+    .source-entry:last-child { border-bottom: none; }
+    .source-entry:first-of-type { padding-top: 0; }
+
+    .source-entry.target {
+      background: #fff8c5;
+      animation: source-highlight 2s ease-out;
+    }
+
+    @keyframes source-highlight {
+      0%, 30% { background: #fff8c5; }
+      100% { background: transparent; }
+    }
+
+    .source-entry .num {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 800;
+      color: black;
+    }
+
+    .source-entry .content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.875rem;
+      align-items: baseline;
+    }
+
+    .source-entry .name {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: black;
+    }
+
+    .source-entry .url a {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .source-entry .url a:hover { text-decoration: underline; }
+
+    .source-entry .planned {
+      display: inline-block;
+      padding: 0.05rem 0.35rem;
+      background: var(--bg-soft);
+      border: 1px solid var(--line-soft);
+      border-radius: 3px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
     @media (max-width: 640px) {
       .header-inner, .main, .footer, .about, .support-page, .learn-page, .hero, .location-filter {
         padding-left: 1.25rem;
@@ -900,11 +1009,38 @@
   <script>
     const HEALTH_DATA = {
   "lastUpdated": "2026-04-28",
-  "source": {
-    "name": "CDC PLACES: Local Data for Better Health, County Data 2025 release",
-    "url": "https://www.cdc.gov/places/",
-    "methodology": "Crude prevalence among adults, derived from BRFSS. Confidence intervals shown."
-  },
+  "sources": [
+    {
+      "id": 1,
+      "name": "CDC PLACES: Local Data for Better Health",
+      "url": "https://www.cdc.gov/places/",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "name": "CDC Respiratory Virus Dashboard",
+      "url": "https://www.cdc.gov/respiratory-viruses/data-research/dashboard/",
+      "status": "coming-soon"
+    },
+    {
+      "id": 3,
+      "name": "Missouri Department of Health and Senior Services",
+      "url": "https://health.mo.gov/",
+      "status": "coming-soon"
+    },
+    {
+      "id": 4,
+      "name": "CDC BRFSS Prevalence & Trends Data",
+      "url": "https://www.cdc.gov/brfss/",
+      "status": "planned"
+    },
+    {
+      "id": 5,
+      "name": "U.S. Census Bureau, American Community Survey",
+      "url": "https://data.census.gov/",
+      "status": "planned"
+    }
+  ],
   "locations": {
     "jackson-mo": {
       "name": "Jackson County, MO",
@@ -1518,6 +1654,7 @@
       "id": "airborne",
       "title": "Airborne respiratory illness",
       "subtitle": "COVID-19, influenza, and RSV transmission and protection",
+      "sources": [2, 3],
       "metrics": [
         [
           "COVID-19 weekly cases",
@@ -1565,6 +1702,7 @@
       "id": "behaviors",
       "title": "Health behaviors",
       "subtitle": "Risk behaviors and mental health among adults",
+      "sources": [1],
       "metrics": [
         [
           "Adult obesity",
@@ -1592,6 +1730,7 @@
       "id": "outcomes",
       "title": "Health outcomes",
       "subtitle": "Prevalence of common chronic conditions",
+      "sources": [1],
       "metrics": [
         [
           "High blood pressure",
@@ -1619,6 +1758,7 @@
       "id": "sdoh",
       "title": "Social determinants of health",
       "subtitle": "Health-related social needs reported in the past 12 months",
+      "sources": [1],
       "metrics": [
         [
           "Lack of health insurance (ages 18\u201364)",
@@ -1651,6 +1791,7 @@
       "id": "disability",
       "title": "Disability",
       "subtitle": "Adults reporting one or more functional disabilities",
+      "sources": [1],
       "metrics": [
         [
           "Any disability",
@@ -1768,7 +1909,7 @@
           React.createElement('div', { className: 'metric-label' }, label),
           React.createElement('div', { className: 'metric-value' }, m.value + m.unit),
           React.createElement('div', { className: 'metric-meta' },
-            React.createElement('span', { className: 'ci' }, '95% CI: ' + m.low + '–' + m.high + m.unit),
+            React.createElement('span', { className: 'ci' }, '95% CI: ' + m.low + '–' + m.high),
             React.createElement('span', { className: 'year' }, m.year + ' data')
           )
         );
@@ -1792,7 +1933,29 @@
           },
             React.createElement('div', { className: 'section-icon ' + section.id }, sectionIcons[section.id]),
             React.createElement('div', { className: 'section-text' },
-              React.createElement('h3', null, section.title),
+              React.createElement('h3', null,
+                section.title,
+                section.sources && section.sources.length > 0 && React.createElement('span', { className: 'citation-group' },
+                  section.sources.map(function(srcId, i) {
+                    return React.createElement('a', {
+                      key: i,
+                      href: '#source-' + srcId,
+                      className: 'citation-link',
+                      onClick: function(e) {
+                        e.stopPropagation();
+                        const target = document.getElementById('source-' + srcId);
+                        if (target) {
+                          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          target.classList.remove('target');
+                          void target.offsetWidth; // force reflow
+                          target.classList.add('target');
+                          setTimeout(function() { target.classList.remove('target'); }, 2000);
+                        }
+                      }
+                    }, srcId);
+                  })
+                )
+              ),
               React.createElement('p', null, section.subtitle)
             ),
             React.createElement('svg', {
@@ -2015,14 +2178,28 @@
             React.createElement('h2', null, 'Mission'),
             React.createElement('p', null, 'This site serves as a publicly available resource on community health conditions in the Kansas City metropolitan area. It collects data from established public health surveillance systems, including the Centers for Disease Control and Prevention and state health departments, and presents these data in a format intended for non-specialist readers. Its purpose is interpretation rather than analysis: providing context and accessibility, not original research.')
           ),
-          React.createElement('div', { className: 'source-banner' },
-            React.createElement('strong', null, 'Data source: '),
-            'Health behaviors, outcomes, social determinants, and disability metrics are from ',
-            React.createElement('a', { href: HEALTH_DATA.source.url, target: '_blank', rel: 'noopener' }, HEALTH_DATA.source.name),
-            '. ', HEALTH_DATA.source.methodology, ' All values shown are crude prevalence among adults from the most recent release.'
-          ),
           React.createElement('div', { className: 'sections' },
             sections.map(renderSection)
+          ),
+          React.createElement('div', { className: 'sources-block' },
+            React.createElement('div', { className: 'sources-block-header' }, 'Sources'),
+            HEALTH_DATA.sources.map(function(src) {
+              return React.createElement('div', {
+                key: src.id,
+                id: 'source-' + src.id,
+                className: 'source-entry'
+              },
+                React.createElement('div', { className: 'num' }, src.id),
+                React.createElement('div', { className: 'content' },
+                  React.createElement('span', { className: 'name' }, src.name),
+                  src.status === 'coming-soon' && React.createElement('span', { className: 'planned' }, 'Coming soon'),
+                  src.status === 'planned' && React.createElement('span', { className: 'planned' }, 'Planned'),
+                  React.createElement('span', { className: 'url' },
+                    React.createElement('a', { href: src.url, target: '_blank', rel: 'noopener' }, src.url)
+                  )
+                )
+              );
+            })
           )
         ),
         React.createElement('div', { className: 'about' },
