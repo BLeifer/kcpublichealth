@@ -983,8 +983,112 @@
       letter-spacing: 0.05em;
     }
 
+
+    /* TWO-COLUMN LAYOUT (home + learn pages, with research panel) */
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .layout-main { min-width: 0; }
+
+    /* When learn page is inside the two-column layout, neutralize its outer container styles */
+    .layout-learn > .layout-main > .learn-page {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.25rem 3rem;
+      }
+    }
+
+    /* RESEARCH PANEL (slate dark) */
+    .research-panel {
+      background: #1f2937;
+      border: 2px solid #1f2937;
+      border-radius: 6px;
+      padding: 1.125rem 1.25rem 1.25rem;
+      color: white;
+    }
+    .research-panel .panel-header {
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.625rem;
+      border-bottom: 1.5px solid rgba(255,255,255,0.2);
+    }
+    .research-panel .panel-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: white;
+      display: block;
+    }
+    .research-panel .panel-updated {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+    .research-panel .panel-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .research-panel .panel-item:last-of-type { border-bottom: none; }
+    .research-panel .panel-item:first-child { padding-top: 0.25rem; }
+    .research-panel .panel-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      margin-bottom: 0.4rem;
+      color: #66a3ff;
+      background: rgba(102,163,255,0.15);
+    }
+    .research-panel a.panel-title {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-decoration: none;
+      line-height: 1.35;
+      margin-bottom: 0.35rem;
+      color: white;
+    }
+    .research-panel a.panel-title:hover { color: #66a3ff; text-decoration: underline; }
+    .research-panel .panel-meta {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+    }
+    .research-panel .panel-footer {
+      margin-top: 0.875rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .research-panel .panel-footer a {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #66a3ff;
+    }
+    .research-panel .panel-footer a:hover { text-decoration: underline; }
+
     @media (max-width: 640px) {
-      .header-inner, .main, .footer, .about, .support-page, .learn-page, .hero, .location-filter {
+      .header-inner, .main, .layout, .footer, .about, .support-page, .learn-page, .hero, .location-filter {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
       }
@@ -1007,6 +1111,22 @@
   <div id="root"></div>
 
   <script>
+    // To add a new study, copy one of the example objects and fill in the fields.
+    // The 3 most recent studies appear in the side panel; "addedDate" controls ordering.
+    // status: omit or set to null for peer-reviewed; set to "preprint" for preprints.
+    const RESEARCH_STUDIES = [
+      // {
+      //   "title": "Your headline in your own words",
+      //   "topic": "Long COVID",
+      //   "url": "https://pubmed.ncbi.nlm.nih.gov/...",
+      //   "journal": "JAMA Intern Med",
+      //   "year": 2024,
+      //   "addedDate": "2026-04-28",
+      //   "status": null
+      // },
+    ];
+    const RESEARCH_LAST_UPDATED = "2026-04-28";
+
     const HEALTH_DATA = {
   "lastUpdated": "2026-04-28",
   "sources": [
@@ -1833,6 +1953,33 @@
   ]
 };
 
+    const LATEST_RESEARCH = {
+      lastUpdated: "April 28, 2026",
+      studies: [
+        {
+          title: "Long COVID risk after vaccination: large multi-site cohort study",
+          tag: "Long COVID",
+          journal: "JAMA Intern Med",
+          year: 2024,
+          url: "https://pubmed.ncbi.nlm.nih.gov/"
+        },
+        {
+          title: "HEPA filtration in classrooms reduces respiratory infection incidence",
+          tag: "Air quality",
+          journal: "NEJM",
+          year: 2023,
+          url: "https://pubmed.ncbi.nlm.nih.gov/"
+        },
+        {
+          title: "Wastewater viral signal predicts hospital admissions days in advance",
+          tag: "Surveillance",
+          journal: "Lancet Public Health",
+          year: 2024,
+          url: "https://pubmed.ncbi.nlm.nih.gov/"
+        }
+      ]
+    };
+
     const { useState } = React;
 
     const App = () => {
@@ -2122,6 +2269,31 @@
         );
       };
 
+      // Research panel (right column on home + learn pages)
+      const renderResearchPanel = function() {
+        return React.createElement('aside', { className: 'research-panel' },
+          React.createElement('div', { className: 'panel-header' },
+            React.createElement('span', { className: 'panel-label' }, 'Latest research'),
+            React.createElement('div', { className: 'panel-updated' }, 'Updated ' + LATEST_RESEARCH.lastUpdated)
+          ),
+          LATEST_RESEARCH.studies.map(function(study, i) {
+            return React.createElement('div', { key: i, className: 'panel-item' },
+              React.createElement('span', { className: 'panel-tag' }, study.tag),
+              React.createElement('a', {
+                href: study.url,
+                target: '_blank',
+                rel: 'noopener',
+                className: 'panel-title'
+              }, study.title),
+              React.createElement('div', { className: 'panel-meta' }, study.journal + ' · ' + study.year)
+            );
+          }),
+          React.createElement('div', { className: 'panel-footer' },
+            React.createElement('a', { href: '#' }, 'See all research →')
+          )
+        );
+      };
+
       // FEEDBACK MODAL
       const feedbackModal = showFeedbackModal && React.createElement('div', { className: 'modal-backdrop' },
         React.createElement('div', { className: 'modal' },
@@ -2166,14 +2338,22 @@
         return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), supportPage);
       }
       if (currentPage === 'learn') {
-        return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), learnPage);
+        return React.createElement(React.Fragment, null,
+          feedbackModal,
+          renderHeader(),
+          React.createElement('div', { className: 'layout layout-learn' },
+            React.createElement('div', { className: 'layout-main' }, learnPage),
+            renderResearchPanel()
+          )
+        );
       }
 
       // HOME PAGE
       return React.createElement(React.Fragment, null,
         feedbackModal,
         renderHeader(), renderHero(), renderLocationFilter(),
-        React.createElement('div', { className: 'main' },
+        React.createElement('div', { className: 'layout' },
+          React.createElement('div', { className: 'layout-main' },
           React.createElement('div', { className: 'intro' },
             React.createElement('h2', null, 'Mission'),
             React.createElement('p', null, 'This site serves as a publicly available resource on community health conditions in the Kansas City metropolitan area. It collects data from established public health surveillance systems, including the Centers for Disease Control and Prevention and state health departments, and presents these data in a format intended for non-specialist readers. Its purpose is interpretation rather than analysis: providing context and accessibility, not original research.')
@@ -2201,6 +2381,8 @@
               );
             })
           )
+          ),
+          renderResearchPanel()
         ),
         React.createElement('div', { className: 'about' },
           React.createElement('div', { className: 'about-inner' },
