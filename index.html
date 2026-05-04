@@ -1087,6 +1087,152 @@
     }
     .research-panel .panel-footer a:hover { text-decoration: underline; }
 
+    .research-panel .panel-empty {
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.55;
+      padding: 0.5rem 0 0.25rem;
+      font-style: italic;
+    }
+
+    /* RESEARCH PAGE */
+    .research-page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+    }
+
+    .research-page-eyebrow {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .research-page-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: black;
+      margin-bottom: 2rem;
+    }
+
+    .research-page-intro {
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .research-page-intro p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+
+    .research-page-intro p:last-child { margin-bottom: 0; }
+
+    /* Coming soon block */
+    .research-coming-soon {
+      background: white;
+      border: 2px solid black;
+      border-radius: 6px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .research-coming-soon-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .research-coming-soon p {
+      font-size: 0.9375rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* Research list (active state — when studies exist) */
+    .research-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .research-list-entry {
+      background: white;
+      border: 2px solid black;
+      border-radius: 6px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .research-list-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: #e6ecff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      margin-bottom: 0.75rem;
+    }
+
+    .research-list-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      color: black;
+      margin-bottom: 0.75rem;
+    }
+
+    .research-list-summary {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 1rem;
+    }
+
+    .research-list-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .research-list-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.8125rem;
+    }
+
+    .research-list-link:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .research-page { padding: 2.5rem 1.25rem 4rem; }
+      .research-page-title { font-size: 2rem; }
+    }
+
+
     @media (max-width: 640px) {
       .header-inner, .main, .layout, .footer, .about, .support-page, .learn-page, .hero, .location-filter {
         padding-left: 1.25rem;
@@ -1111,22 +1257,6 @@
   <div id="root"></div>
 
   <script>
-    // To add a new study, copy one of the example objects and fill in the fields.
-    // The 3 most recent studies appear in the side panel; "addedDate" controls ordering.
-    // status: omit or set to null for peer-reviewed; set to "preprint" for preprints.
-    const RESEARCH_STUDIES = [
-      // {
-      //   "title": "Your headline in your own words",
-      //   "topic": "Long COVID",
-      //   "url": "https://pubmed.ncbi.nlm.nih.gov/...",
-      //   "journal": "JAMA Intern Med",
-      //   "year": 2024,
-      //   "addedDate": "2026-04-28",
-      //   "status": null
-      // },
-    ];
-    const RESEARCH_LAST_UPDATED = "2026-04-28";
-
     const HEALTH_DATA = {
   "lastUpdated": "2026-04-28",
   "sources": [
@@ -1953,30 +2083,21 @@
   ]
 };
 
+    // ===== LATEST RESEARCH PANEL =====
+    // To add a study: copy the template object below, uncomment, and fill in the fields.
+    // The 3 most recent studies appear in the side panel.
+    // Update lastUpdated to the date you most recently added a study.
+    // Once you add the first study, the panel switches from "Coming soon" to the active state automatically.
     const LATEST_RESEARCH = {
       lastUpdated: "April 28, 2026",
       studies: [
-        {
-          title: "Long COVID risk after vaccination: large multi-site cohort study",
-          tag: "Long COVID",
-          journal: "JAMA Intern Med",
-          year: 2024,
-          url: "https://pubmed.ncbi.nlm.nih.gov/"
-        },
-        {
-          title: "HEPA filtration in classrooms reduces respiratory infection incidence",
-          tag: "Air quality",
-          journal: "NEJM",
-          year: 2023,
-          url: "https://pubmed.ncbi.nlm.nih.gov/"
-        },
-        {
-          title: "Wastewater viral signal predicts hospital admissions days in advance",
-          tag: "Surveillance",
-          journal: "Lancet Public Health",
-          year: 2024,
-          url: "https://pubmed.ncbi.nlm.nih.gov/"
-        }
+        // {
+        //   title: "Your plain-language headline in your own words",
+        //   tag: "Long COVID",
+        //   journal: "JAMA Intern Med",
+        //   year: 2024,
+        //   url: "https://pubmed.ncbi.nlm.nih.gov/12345678/"
+        // },
       ]
     };
 
@@ -2214,6 +2335,40 @@
         )
       );
 
+      // RESEARCH PAGE — placeholder while studies are curated
+      const researchPage = React.createElement('div', { className: 'research-page' },
+        React.createElement('button', { onClick: function() { setCurrentPage('home'); }, className: 'support-back' },
+          React.createElement('svg', { viewBox: '0 0 24 24' },
+            React.createElement('path', { d: 'M19 12H5M12 19l-7-7 7-7' })
+          ),
+          'Back to dashboard'
+        ),
+        React.createElement('div', { className: 'research-page-eyebrow' }, 'Research'),
+        React.createElement('h1', { className: 'research-page-title' }, 'Public health research, in plain language'),
+        React.createElement('div', { className: 'research-page-intro' },
+          React.createElement('p', null, 'This page collects peer-reviewed and preprint research that helps explain the conditions tracked on the dashboard. Each entry includes a short summary written for non-specialist readers, the original citation, and a link to the source.'),
+          React.createElement('p', null, 'Studies are curated, not exhaustive. Inclusion here reflects relevance to the questions readers in Kansas City are likely to ask, not an endorsement of every conclusion.')
+        ),
+        LATEST_RESEARCH.studies && LATEST_RESEARCH.studies.length > 0
+          ? React.createElement('div', { className: 'research-list' },
+              LATEST_RESEARCH.studies.map(function(study, i) {
+                return React.createElement('div', { key: i, className: 'research-list-entry' },
+                  React.createElement('span', { className: 'research-list-tag' }, study.tag),
+                  React.createElement('h3', { className: 'research-list-title' }, study.title),
+                  study.summary && React.createElement('p', { className: 'research-list-summary' }, study.summary),
+                  React.createElement('div', { className: 'research-list-meta' },
+                    React.createElement('span', null, study.journal + ' · ' + study.year),
+                    React.createElement('a', { href: study.url, target: '_blank', rel: 'noopener', className: 'research-list-link' }, 'Read on source →')
+                  )
+                );
+              })
+            )
+          : React.createElement('div', { className: 'research-coming-soon' },
+              React.createElement('div', { className: 'research-coming-soon-label' }, 'Coming soon'),
+              React.createElement('p', null, 'No studies have been posted yet. Curated entries will appear here as they are reviewed and added. Each entry will include the citation, a short summary in plain language, and a direct link to the source.')
+            )
+      );
+
       // Header used on every page
       const renderHeader = function() {
         return React.createElement('header', { className: 'header' },
@@ -2271,25 +2426,33 @@
 
       // Research panel (right column on home + learn pages)
       const renderResearchPanel = function() {
+        const hasStudies = LATEST_RESEARCH.studies && LATEST_RESEARCH.studies.length > 0;
         return React.createElement('aside', { className: 'research-panel' },
           React.createElement('div', { className: 'panel-header' },
             React.createElement('span', { className: 'panel-label' }, 'Latest research'),
-            React.createElement('div', { className: 'panel-updated' }, 'Updated ' + LATEST_RESEARCH.lastUpdated)
+            React.createElement('div', { className: 'panel-updated' }, hasStudies ? 'Updated ' + LATEST_RESEARCH.lastUpdated : 'Coming soon')
           ),
-          LATEST_RESEARCH.studies.map(function(study, i) {
-            return React.createElement('div', { key: i, className: 'panel-item' },
-              React.createElement('span', { className: 'panel-tag' }, study.tag),
-              React.createElement('a', {
-                href: study.url,
-                target: '_blank',
-                rel: 'noopener',
-                className: 'panel-title'
-              }, study.title),
-              React.createElement('div', { className: 'panel-meta' }, study.journal + ' · ' + study.year)
-            );
-          }),
+          hasStudies
+            ? LATEST_RESEARCH.studies.map(function(study, i) {
+                return React.createElement('div', { key: i, className: 'panel-item' },
+                  React.createElement('span', { className: 'panel-tag' }, study.tag),
+                  React.createElement('a', {
+                    href: study.url,
+                    target: '_blank',
+                    rel: 'noopener',
+                    className: 'panel-title'
+                  }, study.title),
+                  React.createElement('div', { className: 'panel-meta' }, study.journal + ' · ' + study.year)
+                );
+              })
+            : React.createElement('div', { className: 'panel-empty' },
+                'Curated public health studies will be posted here as they are reviewed and added.'
+              ),
           React.createElement('div', { className: 'panel-footer' },
-            React.createElement('a', { href: '#' }, 'See all research →')
+            React.createElement('a', {
+              href: '#',
+              onClick: function(e) { e.preventDefault(); setCurrentPage('research'); }
+            }, 'See all research →')
           )
         );
       };
@@ -2336,6 +2499,9 @@
       // Render the right page
       if (currentPage === 'support') {
         return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), supportPage);
+      }
+      if (currentPage === 'research') {
+        return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), researchPage);
       }
       if (currentPage === 'learn') {
         return React.createElement(React.Fragment, null,
