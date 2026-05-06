@@ -507,11 +507,18 @@
       font-family: 'Archivo', sans-serif;
       font-size: 1.5rem;
       font-weight: 800;
-      color: black;
       margin-bottom: 0.5rem;
       letter-spacing: -0.01em;
-      text-transform: uppercase;
     }
+
+    .support-handle-link {
+      color: black;
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1px;
+      transition: color 0.15s ease;
+    }
+    .support-handle-link:hover { color: var(--accent); }
 
     .support-handle .placeholder {
       color: var(--ink-muted);
@@ -548,19 +555,53 @@
       color: var(--ink-muted);
     }
 
+    /* QR code — visible on desktop, hidden on mobile (where users can't scan their own phone) */
     .support-qr-block {
       margin-top: 2rem;
       padding-top: 1.75rem;
-      border-top: 2px solid black;
+      border-top: 1.5px solid var(--line-soft);
+      text-align: center;
+    }
+
+    .support-qr-image {
+      display: block;
+      width: 200px;
+      height: auto;
+      margin: 0 auto 0.75rem;
+      border-radius: 6px;
     }
 
     .support-qr-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 800;
-      color: black;
-      margin-bottom: 0.875rem;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 640px) {
+      .support-qr-block { display: none; }
+    }
+
+    /* Primary donate button */
+    .support-donate-button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.875rem 1.5rem;
+      background: black;
+      color: white;
+      text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 2px solid black;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .support-donate-button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     .support-qr-placeholder {
@@ -2304,7 +2345,12 @@
         React.createElement('div', { className: 'support-card' },
           React.createElement('div', { className: 'support-card-label' }, 'Donate via Venmo'),
           React.createElement('div', { className: 'support-handle' },
-            React.createElement('span', { className: 'placeholder' }, '@handle-coming-soon')
+            React.createElement('a', {
+              href: 'https://venmo.com/u/Ben-Leifer',
+              target: '_blank',
+              rel: 'noopener',
+              className: 'support-handle-link'
+            }, '@Ben-Leifer')
           ),
           React.createElement('div', { className: 'support-handle-hint' }, 'Venmo works in any web browser. No app or account required for one-time guest payments.'),
           React.createElement('div', { className: 'support-amounts' },
@@ -2315,9 +2361,19 @@
           ),
           React.createElement('div', { className: 'support-amount-note' }, 'Suggested amounts. Anything is appreciated.'),
           React.createElement('div', { className: 'support-qr-block' },
-            React.createElement('div', { className: 'support-qr-label' }, 'Or scan to pay'),
-            React.createElement('div', { className: 'support-qr-placeholder' }, 'QR code coming soon')
-          )
+            React.createElement('img', {
+              src: 'venmo-qr.png',
+              alt: 'Venmo QR code for @Ben-Leifer',
+              className: 'support-qr-image'
+            }),
+            React.createElement('div', { className: 'support-qr-label' }, 'Scan with your phone camera')
+          ),
+          React.createElement('a', {
+            href: 'https://venmo.com/u/Ben-Leifer',
+            target: '_blank',
+            rel: 'noopener',
+            className: 'support-donate-button'
+          }, 'Open Venmo to donate →')
         ),
         React.createElement('div', { className: 'support-disclaimer' },
           'Donations are not tax-deductible and are not required to access anything on this site. All site content is freely available to the public regardless of contribution.'
