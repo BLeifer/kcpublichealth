@@ -2389,18 +2389,66 @@
 
       // LEARN PAGE
       const glossaryCategories = [
-        { title: 'Statistical concepts', desc: 'How to read and interpret the numbers behind public health.',
-          terms: ['Incidence', 'Prevalence', 'Rate (per 100,000)', 'Confidence interval', 'Age-adjusted rate', 'Crude rate', 'Relative risk', 'Statistical significance', 'Correlation vs. causation', 'Sample size'] },
-        { title: 'Disease and surveillance', desc: 'Terms used to describe how diseases spread and how we track them.',
-          terms: ['Communicable disease', 'Infectious disease', 'Vector-borne disease', 'Zoonotic disease', 'Endemic', 'Epidemic', 'Pandemic', 'Outbreak', 'Surveillance', 'Reportable / notifiable disease', 'Case definition', 'Wastewater surveillance', 'Contact tracing', 'Quarantine vs. isolation'] },
-        { title: 'Immunity and vaccination', desc: 'Terms related to how the body fights infection and how vaccines work.',
-          terms: ['Herd immunity', 'Vaccine efficacy vs. effectiveness', 'Booster', 'Up-to-date vaccination', 'Immunocompromised', 'Antibody', 'mRNA vaccine'] },
-        { title: 'Health equity and population health', desc: 'Concepts about how health is distributed across communities.',
-          terms: ['Social determinants of health', 'Health equity', 'Health equality', 'Health disparity', 'Population health', 'Community health', 'Cost-burdened (housing)', 'Food insecurity', 'Structural inequity'] },
-        { title: 'COVID-19 specific', desc: 'Terms that come up frequently in COVID-19 reporting and research.',
-          terms: ['Long COVID (PASC)', 'SARS-CoV-2', 'Variant', 'Reinfection', 'Asymptomatic transmission', 'Post-acute sequelae'] },
-        { title: 'Risk and prevention', desc: 'How public health frames protection, risk, and intervention.',
-          terms: ['Risk factor', 'Protective factor', 'Primary / secondary / tertiary prevention', 'Modifiable risk', 'Source control', 'Mitigation'] }
+        {
+          title: "Statistical concepts",
+          terms: [
+            { term: "Incidence", definition: "The number of new cases, or people who tested positive for a disease, in a population over a specific period of time." },
+            { term: "Prevalence", definition: "The number or proportion of cases or events or conditions in a given population." },
+            { term: "Rate (per 100,000)", definition: "A measure of the frequency with which an event, such as a new case of illness, occurs in a population over a period of time. The denominator is the population at risk; the numerator is the number of new cases occurring during a given time period." },
+            { term: "Confidence interval", definition: "A range of values for a variable of interest, for instance, a rate, constructed so that this range has a specified probability of including the true value of the variable. The specified probability is called the confidence level, and the end points of the confidence interval are called the confidence limits." },
+            { term: "Crude rate", definition: "An overall or summary rate for a population, without adjustment." },
+            { term: "Relative risk", definition: "A general term for measures of association calculated from the data in a two-by-two table, including risk ratio, rate ratio, and odds ratio." },
+            { term: "Statistical significance", definition: "The measure of how likely it is that a set of study results could have occurred by chance alone. Statistical significance is based on an estimate of the probability of the observed or a greater degree of association between independent and dependent variables occurring under the null hypothesis." },
+            { term: "Sample size", definition: "The (unweighted) number of survey participants included in an estimate." }
+          ]
+        },
+        {
+          title: "Disease and surveillance",
+          terms: [
+            { term: "Vector", definition: "A living intermediary that carries an agent from a reservoir to a susceptible host." },
+            { term: "Zoonosis", definition: "An infectious disease that is transmissible from animals to humans." },
+            { term: "Endemic", definition: "The constant presence of an agent or health condition within a given geographic area or population; can also refer to the usual prevalence of an agent or condition." },
+            { term: "Epidemic", definition: "The occurrence of more cases of disease, injury, or other health condition than expected in a given area or among a specific group of persons during a particular period. Usually, the cases are presumed to have a common cause or to be related to one another in some way." },
+            { term: "Pandemic", definition: "An epidemic occurring over a widespread area (multiple countries or continents) and usually affecting a substantial proportion of the population." },
+            { term: "Outbreak", definition: "The occurrence of more cases of disease, injury, or other health condition than expected in a given area or among a specific group of persons during a specific period. Usually, the cases are presumed to have a common cause or to be related to one another in some way. Sometimes distinguished from an epidemic as more localized, or the term less likely to evoke public panic." },
+            { term: "Surveillance", definition: "The systematic collection, analysis, interpretation, and dissemination of health data on an ongoing basis, to gain knowledge of the pattern of disease occurrence and potential in a community, in order to control and prevent disease in the community." },
+            { term: "Case definition", definition: "A set of uniformly applied criteria for determining whether a person should be identified as having a particular disease, injury, or other health condition. In epidemiology, particularly for an outbreak investigation, a case definition specifies clinical criteria and details of time, place, and person." },
+            { term: "Contact tracing", definition: "The identification, monitoring, and support of a person who has been exposed to, and possibly infected with an infectious agent, such as a person who came in close contact with a person with a confirmed or probable case of disease." }
+          ]
+        },
+        {
+          title: "Immunity and vaccination",
+          terms: [
+            { term: "Herd immunity", definition: "The resistance of a group to invasion and spread of an infectious agent, based on the resistance to infection of a high proportion of individual members of the group. The resistance is a product of the number susceptible and the probability that those who are susceptible will come into contact with an infected person." },
+            { term: "Vaccine efficacy vs. effectiveness", definition: "Vaccine efficacy tells us how much the vaccine lowers the risk of the outcome (e.g., getting sick) in a trial setting. For example, if a vaccine has an efficacy rate of 80%, it means that the vaccinated group had an 80% lower risk of developing disease than the unvaccinated group (those who received the placebo). Vaccine effectiveness refers to how well vaccines work in the real world. Clinical trials include a wide range of people \u2014 a broad age range, both sexes, different ethnicities and those with known medical conditions \u2014 but they cannot be a perfect representation of the whole population." },
+            { term: "Antibody", definition: "Any of a variety of proteins in the blood that are produced in response to an antigen as an immune response." },
+            { term: "mRNA vaccine", definition: "Messenger RNA (mRNA) vaccines teach our cells how to make a protein that will trigger an immune response inside our bodies." }
+          ]
+        },
+        {
+          title: "Social determinants and equity",
+          terms: [
+            { term: "Social determinants of health", definition: "Non-medical factors that affect health outcomes. They include the conditions in which people are born, grow, work, live, and age. SDOH also include the broader forces and systems that shape everyday life conditions. These forces and systems encompass economic policies, development agendas, social norms, social policies, racism, climate change, and political structures." },
+            { term: "Health equity", definition: "The state in which everyone has a fair and just opportunity to attain their highest level of health." },
+            { term: "Health disparity", definition: "Health disparities are preventable differences in the burden of disease, injury, violence, or opportunities. Health disparities are directly related to unequal distribution of social, political, economic, and environmental resources." },
+            { term: "Food insecurity", definition: "When someone is unable to access or afford enough food or enough nutritious food. Food insecurity doesn\u2019t always mean that someone goes without food. It might mean they\u2019re eating less healthy food options like packaged foods that cost less. Fresh, nutritious foods are hard to find or too expensive in some communities." }
+          ]
+        },
+        {
+          title: "COVID-19 and Long COVID",
+          terms: [
+            { term: "Long COVID (PASC)", definition: "A chronic condition that occurs after SARS-CoV-2 infection and is present for at least 3 months. Long COVID includes a wide range of symptoms or conditions that may improve, worsen, or be ongoing." },
+            { term: "COVID-19", definition: "A disease caused by the SARS-CoV-2 virus. COVID-19 most often causes respiratory symptoms that can feel much like a cold, the flu, or pneumonia. COVID-19 may attack more than your lungs and respiratory system. Other parts of your body may also be affected by the disease. Most people with COVID-19 have mild symptoms, but some people become severely ill." },
+            { term: "Variant", definition: "SARS-CoV-2, the virus that causes COVID-19, is constantly accumulating mutations in its genetic sequence over time. These mutations can result in new variants with different traits. New variants of SARS-CoV-2 are expected to continue to emerge. Some variants will emerge and disappear, while others will emerge and continue to spread and may replace previous variants." },
+            { term: "Asymptomatic transmission", definition: "The spread of a virus by a person who is infected but never develops symptoms of the disease." }
+          ]
+        },
+        {
+          title: "Prevention and risk",
+          terms: [
+            { term: "Risk factor", definition: "An aspect of personal behavior or lifestyle, an environmental exposure, or an inborn or inherited characteristic that is associated with an increased occurrence of disease or other health-related event or condition." }
+          ]
+        }
       ];
 
       const learnPage = React.createElement('div', { className: 'learn-page' },
@@ -2413,17 +2461,16 @@
         React.createElement('div', { className: 'learn-intro' },
           React.createElement('div', { className: 'learn-eyebrow' }, 'Learn'),
           React.createElement('h1', { className: 'learn-title' }, 'A working vocabulary for public health.'),
-          React.createElement('p', { className: 'learn-subtitle' }, 'Reading public health information requires knowing the terms it uses. This is a growing reference of the concepts that come up most often in news coverage, research, and on this site itself.')
+          React.createElement('p', { className: 'learn-subtitle' }, 'Reading public health information requires knowing the terms it uses. This is a growing reference of the concepts that come up most often in news coverage, research, and on this site itself. All definitions are sourced directly from the Centers for Disease Control and Prevention (CDC) or the World Health Organization (WHO).')
         ),
         glossaryCategories.map(function(cat, i) {
           return React.createElement('div', { key: i, className: 'glossary-category' },
             React.createElement('h2', { className: 'glossary-category-header' }, cat.title),
-            React.createElement('p', { className: 'glossary-category-desc' }, cat.desc),
             React.createElement('div', { className: 'glossary-list' },
-              cat.terms.map(function(term, j) {
+              cat.terms.map(function(t, j) {
                 return React.createElement('div', { key: j, className: 'glossary-entry' },
-                  React.createElement('div', { className: 'glossary-term' }, term),
-                  React.createElement('div', { className: 'glossary-definition empty' }, 'Definition coming soon')
+                  React.createElement('div', { className: 'glossary-term' }, t.term),
+                  React.createElement('div', { className: 'glossary-definition' }, t.definition)
                 );
               })
             )
@@ -2431,7 +2478,7 @@
         }),
         React.createElement('div', { className: 'learn-footer-note' },
           React.createElement('strong', null, 'Note: '),
-          'This glossary is a work in progress. Definitions are being researched, written, and sourced from authoritative references such as the CDC, WHO, and peer-reviewed literature. If you spot a term you would like added or want to suggest a clearer definition, use the feedback form.'
+          'This glossary is a growing reference. If you spot a term you would like added or want to suggest a clearer definition, use the feedback form.'
         )
       );
 
