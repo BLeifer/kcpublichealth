@@ -1,25 +1,29 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KC Public Health — Kansas City Health Data &amp; Resources</title>
   <meta name="description" content="Independent public health data for the Kansas City metro, sourced from CDC PLACES and other authoritative datasets.">
-  
+
   <!-- Privacy-friendly analytics by Plausible -->
+
   <script async src="https://plausible.io/js/pa-49PgckHTLRjgGZ_35Bl3G.js"></script>
+
   <script>
     window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
     plausible.init()
   </script>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -306,6 +310,7 @@
     .section-icon.sdoh { color: var(--sdoh-accent); }
     .section-icon.disability { color: var(--disability-accent); }
     .section-icon.airborne { color: var(--airborne-accent); }
+    .section-icon.reading { color: var(--accent); }
 
     .section-icon svg {
       width: 22px;
@@ -821,9 +826,36 @@
 
     .btn-submit { background: black; color: white; }
     .btn-submit:hover { background: var(--accent); border-color: var(--accent); }
+    .btn-submit:disabled {
+      background: var(--ink-muted);
+      border-color: var(--ink-muted);
+      cursor: wait;
+      opacity: 0.7;
+    }
 
     .btn-cancel { background: white; color: black; }
     .btn-cancel:hover { background: var(--bg-soft); }
+
+    .feedback-error {
+      background: #fef2f2;
+      border: 1.5px solid #d40020;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      color: #7a1015;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .feedback-success {
+      padding: 0.5rem 0;
+    }
+    .feedback-success h3 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
 
     /* ABOUT */
     .about {
@@ -1029,6 +1061,85 @@
       color: var(--ink-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    /* RECOMMENDED READING SECTION (sits in the dashboard sections list, like Health Behaviors) */
+    .reading-list-wrap { padding: 0; }
+
+    .reading-item {
+      padding: 1rem 1.5rem;
+      border-bottom: 1.5px solid var(--line-soft);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: baseline;
+    }
+    .reading-item:last-of-type { border-bottom: none; }
+
+    .reading-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: #e6ecff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .reading-content { min-width: 0; }
+
+    .reading-title {
+      display: block;
+      font-family: 'Archivo', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: black;
+      text-decoration: none;
+      line-height: 1.35;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.005em;
+    }
+    .reading-title:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .reading-meta {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .reading-footer-row {
+      padding: 1rem 1.5rem;
+      background: var(--bg-soft);
+      border-top: 1.5px solid var(--line-soft);
+      text-align: right;
+    }
+    .reading-footer-row a {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .reading-footer-row a:hover { text-decoration: underline; }
+
+    .reading-empty {
+      padding: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    @media (max-width: 640px) {
+      .reading-item { padding: 0.875rem 1.25rem; grid-template-columns: 1fr; gap: 0.5rem; }
+      .reading-tag { justify-self: start; }
     }
 
 
@@ -1328,6 +1439,7 @@
       .brand-title { font-size: 1rem; }
     }
   </style>
+
 </head>
 <body>
   <div id="root"></div>
@@ -2155,6 +2267,12 @@
           "self_care"
         ]
       ]
+    },
+    {
+      "id": "reading",
+      "title": "Recommended reading",
+      "subtitle": "News, op-eds, and longform journalism on public health",
+      "metrics": []
     }
   ]
 };
@@ -2186,6 +2304,31 @@
       ]
     };
 
+    // ===== RECOMMENDED READING SECTION =====
+    // News articles, op-eds, books relevant to public health.
+    // To add: copy the template, fill in fields, add to the TOP of the array (newest first).
+    // The first 3 appear on the dashboard; the rest appear on the dedicated /reading page (TBD).
+    const RECOMMENDED_READING = {
+      lastUpdated: "May 13, 2026",
+      items: [
+        {
+          title: "Lake Tahoe data center will use as much power as 49,000 residents",
+          tag: "Energy & health",
+          publication: "Fortune",
+          date: "May 12, 2026",
+          url: "https://fortune.com/2026/05/12/lake-tahoe-data-center-49000-residents-power-source/"
+        },
+        // Template:
+        // {
+        //   title: "Article title in original wording",
+        //   tag: "Topic",
+        //   publication: "Publication name",
+        //   date: "Month DD, YYYY",
+        //   url: "https://..."
+        // },
+      ]
+    };
+
     const { useState } = React;
 
     const App = () => {
@@ -2198,11 +2341,45 @@
       const currentData = HEALTH_DATA.locations[selectedLocation];
       const sections = HEALTH_DATA.sections;
 
-      const handleFeedbackSubmit = function(e) {
+      const [feedbackStatus, setFeedbackStatus] = useState('idle'); // idle | submitting | success | error
+
+      const handleFeedbackSubmit = async function(e) {
         e.preventDefault();
-        alert('Thank you for your feedback. We will review your ' + feedbackForm.category + '.');
-        setFeedbackForm({ name: '', email: '', message: '', category: 'suggestion' });
+        setFeedbackStatus('submitting');
+        try {
+          const response = await fetch('https://formsubmit.co/ajax/kcph816@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              name: feedbackForm.name || '(not provided)',
+              email: feedbackForm.email,
+              category: feedbackForm.category,
+              message: feedbackForm.message,
+              _subject: 'KC Public Health — feedback (' + feedbackForm.category + ')',
+              _template: 'table',
+              _captcha: 'false'
+            })
+          });
+          if (response.ok) {
+            setFeedbackStatus('success');
+            setFeedbackForm({ name: '', email: '', message: '', category: 'suggestion' });
+            // Plausible custom event
+            if (window.plausible) window.plausible('Feedback Submitted');
+          } else {
+            setFeedbackStatus('error');
+          }
+        } catch (err) {
+          setFeedbackStatus('error');
+        }
+      };
+
+      const closeFeedbackModal = function() {
         setShowFeedbackModal(false);
+        // reset status when modal closes
+        setTimeout(function() { setFeedbackStatus('idle'); }, 300);
       };
 
       const handleFeedbackChange = function(e) {
@@ -2237,12 +2414,19 @@
         React.createElement('path', { d: 'M6 11h12' })
       );
 
+      // Reading icon — open book / document
+      const ReadingIcon = React.createElement('svg', { viewBox: '0 0 24 24' },
+        React.createElement('path', { d: 'M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4V4z' }),
+        React.createElement('path', { d: 'M8 10h8M8 14h6' })
+      );
+
       const sectionIcons = {
         airborne: AirborneIcon,
         behaviors: ActivityIcon,
         outcomes: HeartIcon,
         sdoh: UsersIcon,
         disability: AccessibilityIcon,
+        reading: ReadingIcon,
       };
 
       // Render a single metric card
@@ -2272,6 +2456,7 @@
       const renderSection = function(section) {
         const isExpanded = expandedSection === section.id;
         const isAirborne = section.id === 'airborne';
+        const isReading = section.id === 'reading';
         const hasPlacesData = currentData.metrics !== null;
         // Airborne always shows its grid (with N/A cards). PLACES sections only show grid if we have data.
         const showGrid = isAirborne || hasPlacesData;
@@ -2322,14 +2507,48 @@
             }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
           ),
           isExpanded && React.createElement('div', { className: 'section-content' },
-            !showGrid
-              ? React.createElement('div', { className: 'data-not-available' },
-                  React.createElement('strong', null, 'Data not yet available'),
-                  'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
-                )
-              : React.createElement('div', { className: 'metric-grid' },
-                  section.metrics.map(function(m) { return renderMetric(m, section.id); })
-                )
+            isReading
+              ? renderReadingList()
+              : !showGrid
+                ? React.createElement('div', { className: 'data-not-available' },
+                    React.createElement('strong', null, 'Data not yet available'),
+                    'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
+                  )
+                : React.createElement('div', { className: 'metric-grid' },
+                    section.metrics.map(function(m) { return renderMetric(m, section.id); })
+                  )
+          )
+        );
+      };
+
+      // Render the article list for the Recommended Reading section
+      const renderReadingList = function() {
+        const items = RECOMMENDED_READING.items.slice(0, 3);
+        if (items.length === 0) {
+          return React.createElement('div', { className: 'reading-empty' },
+            'Articles will appear here as they are reviewed and added.'
+          );
+        }
+        return React.createElement('div', { className: 'reading-list-wrap' },
+          items.map(function(item, i) {
+            return React.createElement('div', { key: i, className: 'reading-item' },
+              React.createElement('span', { className: 'reading-tag' }, item.tag),
+              React.createElement('div', { className: 'reading-content' },
+                React.createElement('a', {
+                  href: item.url,
+                  target: '_blank',
+                  rel: 'noopener',
+                  className: 'reading-title'
+                }, item.title),
+                React.createElement('div', { className: 'reading-meta' }, item.publication + ' · ' + item.date)
+              )
+            );
+          }),
+          React.createElement('div', { className: 'reading-footer-row' },
+            React.createElement('a', {
+              href: '#',
+              onClick: function(e) { e.preventDefault(); setCurrentPage('reading'); }
+            }, 'See all reading →')
           )
         );
       };
@@ -2523,6 +2742,45 @@
             )
       );
 
+      // RECOMMENDED READING PAGE (full list of curated articles)
+      const readingPage = React.createElement('div', { className: 'research-page' },
+        React.createElement('button', { onClick: function() { setCurrentPage('home'); }, className: 'support-back' },
+          React.createElement('svg', { viewBox: '0 0 24 24' },
+            React.createElement('path', { d: 'M19 12H5M12 19l-7-7 7-7' })
+          ),
+          'Back to dashboard'
+        ),
+        React.createElement('div', { className: 'research-page-eyebrow' }, 'Reading'),
+        React.createElement('h1', { className: 'research-page-title' }, 'Recommended reading'),
+        React.createElement('div', { className: 'research-page-intro' },
+          React.createElement('p', null, 'A curated list of news articles, op-eds, and longform journalism relevant to public health. These are not peer-reviewed studies — for those, see the research page.'),
+          React.createElement('p', null, 'Inclusion here reflects relevance to the conditions and decisions that shape population health in Kansas City and elsewhere. Each entry links to the original source.')
+        ),
+        RECOMMENDED_READING.items && RECOMMENDED_READING.items.length > 0
+          ? React.createElement('div', { className: 'research-list' },
+              RECOMMENDED_READING.items.map(function(item, i) {
+                return React.createElement('div', { key: i, className: 'research-list-entry' },
+                  React.createElement('span', { className: 'research-list-tag' }, item.tag),
+                  React.createElement('h3', { className: 'research-list-title' },
+                    React.createElement('a', {
+                      href: item.url,
+                      target: '_blank',
+                      rel: 'noopener',
+                      className: 'research-list-title-link'
+                    }, item.title)
+                  ),
+                  React.createElement('div', { className: 'research-list-meta' },
+                    React.createElement('span', null, item.publication + ' · ' + item.date)
+                  )
+                );
+              })
+            )
+          : React.createElement('div', { className: 'research-coming-soon' },
+              React.createElement('div', { className: 'research-coming-soon-label' }, 'Coming soon'),
+              React.createElement('p', null, 'No articles have been posted yet. Curated entries will appear here as they are added.')
+            )
+      );
+
       // Header used on every page
       const renderHeader = function() {
         return React.createElement('header', { className: 'header' },
@@ -2615,39 +2873,56 @@
       // FEEDBACK MODAL
       const feedbackModal = showFeedbackModal && React.createElement('div', { className: 'modal-backdrop' },
         React.createElement('div', { className: 'modal' },
-          React.createElement('h3', null, 'Share your feedback'),
-          React.createElement('p', { className: 'subtitle' }, 'Help us improve this resource. All submissions are private and reviewed directly by our team.'),
-          React.createElement('form', { onSubmit: handleFeedbackSubmit },
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', null, 'Name'),
-              React.createElement('input', { type: 'text', name: 'name', value: feedbackForm.name, onChange: handleFeedbackChange, placeholder: 'Your name (optional)' })
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', null, 'Email'),
-              React.createElement('input', { type: 'email', name: 'email', value: feedbackForm.email, onChange: handleFeedbackChange, required: true, placeholder: 'your@email.com' })
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', null, 'Category'),
-              React.createElement('select', { name: 'category', value: feedbackForm.category, onChange: handleFeedbackChange },
-                React.createElement('option', { value: 'suggestion' }, 'Suggestion'),
-                React.createElement('option', { value: 'bug' }, 'Report a bug'),
-                React.createElement('option', { value: 'data' }, 'Data issue'),
-                React.createElement('option', { value: 'topic' }, 'Topic request'),
-                React.createElement('option', { value: 'other' }, 'Other')
+          feedbackStatus === 'success'
+            ? React.createElement('div', { className: 'feedback-success' },
+                React.createElement('h3', null, 'Thank you'),
+                React.createElement('p', { className: 'subtitle' }, 'Your feedback has been received. We read every submission and use it to improve the site.'),
+                React.createElement('div', { className: 'modal-buttons' },
+                  React.createElement('button', { type: 'button', onClick: closeFeedbackModal, className: 'btn-submit' }, 'Close')
+                )
               )
-            ),
-            React.createElement('div', { className: 'form-group' },
-              React.createElement('label', null, 'Message'),
-              React.createElement('textarea', { name: 'message', value: feedbackForm.message, onChange: handleFeedbackChange, required: true, placeholder: 'Tell us what you think...' })
-            ),
-            React.createElement('div', { className: 'privacy-note' },
-              'Your feedback is private and will only be reviewed by the KC Public Health team.'
-            ),
-            React.createElement('div', { className: 'modal-buttons' },
-              React.createElement('button', { type: 'submit', className: 'btn-submit' }, 'Send feedback'),
-              React.createElement('button', { type: 'button', onClick: function() { setShowFeedbackModal(false); }, className: 'btn-cancel' }, 'Cancel')
-            )
-          )
+            : React.createElement(React.Fragment, null,
+                React.createElement('h3', null, 'Share your feedback'),
+                React.createElement('p', { className: 'subtitle' }, 'Help us improve this resource. All submissions are private and reviewed directly.'),
+                React.createElement('form', { onSubmit: handleFeedbackSubmit },
+                  React.createElement('div', { className: 'form-group' },
+                    React.createElement('label', null, 'Name'),
+                    React.createElement('input', { type: 'text', name: 'name', value: feedbackForm.name, onChange: handleFeedbackChange, placeholder: 'Your name (optional)' })
+                  ),
+                  React.createElement('div', { className: 'form-group' },
+                    React.createElement('label', null, 'Email'),
+                    React.createElement('input', { type: 'email', name: 'email', value: feedbackForm.email, onChange: handleFeedbackChange, required: true, placeholder: 'your@email.com' })
+                  ),
+                  React.createElement('div', { className: 'form-group' },
+                    React.createElement('label', null, 'Category'),
+                    React.createElement('select', { name: 'category', value: feedbackForm.category, onChange: handleFeedbackChange },
+                      React.createElement('option', { value: 'suggestion' }, 'Suggestion'),
+                      React.createElement('option', { value: 'bug' }, 'Report a bug'),
+                      React.createElement('option', { value: 'data' }, 'Data issue'),
+                      React.createElement('option', { value: 'topic' }, 'Topic request'),
+                      React.createElement('option', { value: 'other' }, 'Other')
+                    )
+                  ),
+                  React.createElement('div', { className: 'form-group' },
+                    React.createElement('label', null, 'Message'),
+                    React.createElement('textarea', { name: 'message', value: feedbackForm.message, onChange: handleFeedbackChange, required: true, placeholder: 'Tell us what you think...' })
+                  ),
+                  React.createElement('div', { className: 'privacy-note' },
+                    'Your feedback is private and goes directly to the site maintainer.'
+                  ),
+                  feedbackStatus === 'error' && React.createElement('div', { className: 'feedback-error' },
+                    'Something went wrong. Please try again, or email us directly at kcph816@gmail.com.'
+                  ),
+                  React.createElement('div', { className: 'modal-buttons' },
+                    React.createElement('button', {
+                      type: 'submit',
+                      className: 'btn-submit',
+                      disabled: feedbackStatus === 'submitting'
+                    }, feedbackStatus === 'submitting' ? 'Sending...' : 'Send feedback'),
+                    React.createElement('button', { type: 'button', onClick: closeFeedbackModal, className: 'btn-cancel' }, 'Cancel')
+                  )
+                )
+              )
         )
       );
 
@@ -2657,6 +2932,9 @@
       }
       if (currentPage === 'research') {
         return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), researchPage);
+      }
+      if (currentPage === 'reading') {
+        return React.createElement(React.Fragment, null, feedbackModal, renderHeader(), readingPage);
       }
       if (currentPage === 'learn') {
         return React.createElement(React.Fragment, null,
@@ -2732,5 +3010,6 @@
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(React.createElement(App));
   </script>
+
 </body>
 </html>
