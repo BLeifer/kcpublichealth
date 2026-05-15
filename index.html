@@ -2347,7 +2347,7 @@
         e.preventDefault();
         setFeedbackStatus('submitting');
         try {
-          const response = await fetch('https://formsubmit.co/ajax/kcph816@gmail.com', {
+          const response = await fetch('https://formspree.io/f/mgodgebz', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -2358,9 +2358,7 @@
               email: feedbackForm.email,
               category: feedbackForm.category,
               message: feedbackForm.message,
-              _subject: 'KC Public Health — feedback (' + feedbackForm.category + ')',
-              _template: 'table',
-              _captcha: 'false'
+              _subject: 'KC Public Health — feedback (' + feedbackForm.category + ')'
             })
           });
           if (response.ok) {
