@@ -2618,29 +2618,7 @@
           },
             React.createElement('div', { className: 'section-icon ' + section.id }, sectionIcons[section.id]),
             React.createElement('div', { className: 'section-text' },
-              React.createElement('h3', null,
-                section.title,
-                section.sources && section.sources.length > 0 && React.createElement('span', { className: 'citation-group' },
-                  section.sources.map(function(srcId, i) {
-                    return React.createElement('a', {
-                      key: i,
-                      href: '#source-' + srcId,
-                      className: 'citation-link',
-                      onClick: function(e) {
-                        e.stopPropagation();
-                        const target = document.getElementById('source-' + srcId);
-                        if (target) {
-                          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          target.classList.remove('target');
-                          void target.offsetWidth; // force reflow
-                          target.classList.add('target');
-                          setTimeout(function() { target.classList.remove('target'); }, 2000);
-                        }
-                      }
-                    }, srcId);
-                  })
-                )
-              ),
+              React.createElement('h3', null, section.title),
               React.createElement('p', null, section.subtitle)
             ),
             React.createElement('svg', {
