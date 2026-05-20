@@ -275,9 +275,14 @@
       background: var(--bg);
       border: 1px solid var(--card-border);
       border-radius: var(--card-radius);
-      overflow: hidden;
+      overflow: visible;
       transition: none;
       box-shadow: var(--card-shadow);
+    }
+    /* keep the header's top corners rounded since section no longer clips */
+    .section-trigger {
+      border-top-left-radius: var(--card-radius);
+      border-top-right-radius: var(--card-radius);
     }
 
     .section.expanded { /* same as default */ }
@@ -415,30 +420,55 @@
     }
     .metric-card.info-open .metric-info-toggle { opacity: 1; color: var(--accent); }
 
-    /* Expandable info panel */
-    .metric-info-panel {
-      margin-top: 0.875rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--card-divider);
+    /* Floating info popover (does not change card size) */
+    .metric-info-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: transparent;
+    }
+    .metric-info-popover {
+      position: absolute;
+      top: 2.5rem;
+      left: 0.5rem;
+      z-index: 51;
+      width: 230px;
+      max-width: calc(100vw - 3rem);
+      background: var(--ink);
+      color: #fbf9f4;
+      border-radius: 10px;
+      padding: 0.875rem 1rem;
+      box-shadow: 0 8px 28px rgba(26,24,19,0.28);
+    }
+    .metric-info-popover-arrow {
+      position: absolute;
+      top: -6px;
+      left: 1rem;
+      width: 12px;
+      height: 12px;
+      background: var(--ink);
+      transform: rotate(45deg);
+      border-radius: 2px;
     }
     .metric-info-row {
       display: grid;
-      grid-template-columns: 64px 1fr;
+      grid-template-columns: 58px 1fr;
       gap: 0.5rem;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
       align-items: baseline;
+      position: relative;
     }
     .metric-info-row:last-child { margin-bottom: 0; }
     .metric-info-key {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--accent);
+      color: #a3b4d8;
     }
     .metric-info-val {
       font-size: 0.75rem;
-      color: var(--ink-soft);
+      color: rgba(251,249,244,0.92);
       font-weight: 500;
       line-height: 1.4;
     }
@@ -2510,7 +2540,7 @@
           React.createElement('button', {
             className: 'metric-info-toggle',
             'aria-label': 'More information about ' + label,
-            onClick: function() { setOpenMetricInfo(isInfoOpen ? null : infoKey); }
+            onClick: function(e) { e.stopPropagation(); setOpenMetricInfo(isInfoOpen ? null : infoKey); }
           },
             React.createElement('svg', { viewBox: '0 0 24 24' },
               React.createElement('circle', { cx: 12, cy: 12, r: 10 }),
@@ -2523,7 +2553,8 @@
           React.createElement('div', { className: 'metric-meta' },
             React.createElement('span', { className: 'year' }, m.year + ' data')
           ),
-          isInfoOpen && React.createElement('div', { className: 'metric-info-panel' },
+          isInfoOpen && React.createElement('div', { className: 'metric-info-popover' },
+            React.createElement('div', { className: 'metric-info-popover-arrow' }),
             fullName && React.createElement('div', { className: 'metric-info-row' },
               React.createElement('span', { className: 'metric-info-key' }, 'Measure'),
               React.createElement('span', { className: 'metric-info-val' }, fullName)
@@ -2531,10 +2562,6 @@
             React.createElement('div', { className: 'metric-info-row' },
               React.createElement('span', { className: 'metric-info-key' }, '95% CI'),
               React.createElement('span', { className: 'metric-info-val' }, m.low + ' – ' + m.high)
-            ),
-            React.createElement('div', { className: 'metric-info-row' },
-              React.createElement('span', { className: 'metric-info-key' }, 'Year'),
-              React.createElement('span', { className: 'metric-info-val' }, m.year)
             ),
             sourceName && React.createElement('div', { className: 'metric-info-row' },
               React.createElement('span', { className: 'metric-info-key' }, 'Source'),
@@ -3042,6 +3069,10 @@
       // HOME PAGE
       return React.createElement(React.Fragment, null,
         feedbackModal,
+        openMetricInfo && React.createElement('div', {
+          className: 'metric-info-backdrop',
+          onClick: function() { setOpenMetricInfo(null); }
+        }),
         renderHeader(), renderHero(), renderLocationFilter(),
         React.createElement('div', { className: 'layout' },
           React.createElement('div', { className: 'layout-main' },
