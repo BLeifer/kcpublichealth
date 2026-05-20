@@ -1161,12 +1161,47 @@
       letter-spacing: 0.05em;
     }
 
-    /* RECOMMENDED READING SECTION (sits in the dashboard sections list, like Health Behaviors) */
-    .reading-list-wrap { padding: 0; }
+    /* RECOMMENDED READING — standalone tinted block below the dashboard sections */
+    .reading-block {
+      background: #e4e8f4;
+      border: 1px solid #c5cce6;
+      border-radius: var(--card-radius);
+      padding: 1.5rem 1.75rem 1.25rem;
+      margin-top: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+    .reading-block-eyebrow {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .reading-block-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+    .reading-block-subtitle {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.1rem;
+    }
+    .reading-block-inner {
+      background: #f4f5fb;
+      border: 1px solid #c5cce6;
+      border-radius: var(--card-radius);
+      overflow: hidden;
+    }
 
     .reading-item {
-      padding: 1rem 1.5rem;
-      border-bottom: 1.5px solid var(--line-soft);
+      padding: 1rem 1.25rem;
+      border-bottom: 1.5px solid #c5cce6;
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 1rem;
@@ -1178,11 +1213,11 @@
       font-size: 0.65rem;
       font-weight: 700;
       color: var(--accent);
-      background: #e6ecff;
+      background: var(--accent-soft);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       padding: 0.2rem 0.5rem;
-      border-radius: 3px;
+      border-radius: 5px;
       white-space: nowrap;
     }
 
@@ -1211,9 +1246,7 @@
     }
 
     .reading-footer-row {
-      padding: 1rem 1.5rem;
-      background: var(--bg-soft);
-      border-top: 1.5px solid var(--line-soft);
+      padding: 1rem 1.25rem;
       text-align: right;
     }
     .reading-footer-row a {
@@ -1236,7 +1269,8 @@
     }
 
     @media (max-width: 640px) {
-      .reading-item { padding: 0.875rem 1.25rem; grid-template-columns: 1fr; gap: 0.5rem; }
+      .reading-block { padding: 1.25rem 1.25rem 1rem; }
+      .reading-item { padding: 0.875rem 1rem; grid-template-columns: 1fr; gap: 0.5rem; }
       .reading-tag { justify-self: start; }
     }
 
@@ -2342,12 +2376,6 @@
           "self_care"
         ]
       ]
-    },
-    {
-      "id": "reading",
-      "title": "Recommended reading",
-      "subtitle": "News, op-eds, and longform journalism on public health",
-      "metrics": []
     }
   ]
 };
@@ -2389,8 +2417,9 @@
 
     // ===== RECOMMENDED READING SECTION =====
     // News articles, op-eds, books relevant to public health.
-    // To add: copy the template, fill in fields, add to the TOP of the array (newest first).
-    // The first 3 appear on the dashboard; the rest appear on the dedicated /reading page (TBD).
+    // ORDERING: newest-first. Add each new article to the TOP of the items array.
+    // The dashboard block shows the 3 newest; older ones automatically drop to the
+    // /reading "See all" page. No manual pruning needed — just add to the top.
     const RECOMMENDED_READING = {
       lastUpdated: "May 13, 2026",
       items: [
@@ -2575,7 +2604,6 @@
       const renderSection = function(section) {
         const isExpanded = expandedSection === section.id;
         const isAirborne = section.id === 'airborne';
-        const isReading = section.id === 'reading';
         const hasPlacesData = currentData.metrics !== null;
         // Airborne always shows its grid (with N/A cards). PLACES sections only show grid if we have data.
         const showGrid = isAirborne || hasPlacesData;
@@ -2626,48 +2654,52 @@
             }, React.createElement('path', { d: 'M6 9l6 6 6-6' }))
           ),
           isExpanded && React.createElement('div', { className: 'section-content' },
-            isReading
-              ? renderReadingList()
-              : !showGrid
-                ? React.createElement('div', { className: 'data-not-available' },
-                    React.createElement('strong', null, 'Data not yet available'),
-                    'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
-                  )
-                : React.createElement('div', { className: 'metric-grid' },
-                    section.metrics.map(function(m) { return renderMetric(m, section.id, section.sources); })
-                  )
+            !showGrid
+              ? React.createElement('div', { className: 'data-not-available' },
+                  React.createElement('strong', null, 'Data not yet available'),
+                  'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
+                )
+              : React.createElement('div', { className: 'metric-grid' },
+                  section.metrics.map(function(m) { return renderMetric(m, section.id, section.sources); })
+                )
           )
         );
       };
 
-      // Render the article list for the Recommended Reading section
-      const renderReadingList = function() {
+      // Standalone Recommended Reading block (tinted, full-width, below the dashboard sections).
+      // Shows the 3 newest items; the rest flow to the /reading page via "See all".
+      // Newest-first ordering is maintained by adding new items to the TOP of RECOMMENDED_READING.items.
+      const renderReadingBlock = function() {
         const items = RECOMMENDED_READING.items.slice(0, 3);
-        if (items.length === 0) {
-          return React.createElement('div', { className: 'reading-empty' },
-            'Articles will appear here as they are reviewed and added.'
-          );
-        }
-        return React.createElement('div', { className: 'reading-list-wrap' },
-          items.map(function(item, i) {
-            return React.createElement('div', { key: i, className: 'reading-item' },
-              React.createElement('span', { className: 'reading-tag' }, item.tag),
-              React.createElement('div', { className: 'reading-content' },
-                React.createElement('a', {
-                  href: item.url,
-                  target: '_blank',
-                  rel: 'noopener',
-                  className: 'reading-title'
-                }, item.title),
-                React.createElement('div', { className: 'reading-meta' }, item.publication + ' · ' + item.date)
-              )
-            );
-          }),
-          React.createElement('div', { className: 'reading-footer-row' },
-            React.createElement('a', {
-              href: '#',
-              onClick: function(e) { e.preventDefault(); setCurrentPage('reading'); }
-            }, 'See all reading →')
+        return React.createElement('div', { className: 'reading-block' },
+          React.createElement('div', { className: 'reading-block-eyebrow' }, 'Curated · Reading'),
+          React.createElement('h3', { className: 'reading-block-title' }, 'Recommended reading'),
+          React.createElement('p', { className: 'reading-block-subtitle' }, 'News, op-eds, and longform journalism on public health'),
+          React.createElement('div', { className: 'reading-block-inner' },
+            items.length === 0
+              ? React.createElement('div', { className: 'reading-empty' }, 'Articles will appear here as they are reviewed and added.')
+              : React.createElement(React.Fragment, null,
+                  items.map(function(item, i) {
+                    return React.createElement('div', { key: i, className: 'reading-item' },
+                      React.createElement('span', { className: 'reading-tag' }, item.tag),
+                      React.createElement('div', { className: 'reading-content' },
+                        React.createElement('a', {
+                          href: item.url,
+                          target: '_blank',
+                          rel: 'noopener',
+                          className: 'reading-title'
+                        }, item.title),
+                        React.createElement('div', { className: 'reading-meta' }, item.publication + ' · ' + item.date)
+                      )
+                    );
+                  }),
+                  React.createElement('div', { className: 'reading-footer-row' },
+                    React.createElement('a', {
+                      href: '#',
+                      onClick: function(e) { e.preventDefault(); setCurrentPage('reading'); }
+                    }, 'See all reading →')
+                  )
+                )
           )
         );
       };
@@ -3083,6 +3115,7 @@
           React.createElement('div', { className: 'sections' },
             sections.map(renderSection)
           ),
+          renderReadingBlock(),
           React.createElement('div', { className: 'sources-block' },
             React.createElement('div', { className: 'sources-block-header' }, 'Sources'),
             HEALTH_DATA.sources.map(function(src) {
