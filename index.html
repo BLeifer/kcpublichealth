@@ -378,10 +378,69 @@
     }
 
     .metric-card {
-      background: white;
+      background: var(--bg);
       border-right: 1.5px solid var(--card-divider);
       border-bottom: 1.5px solid var(--card-divider);
       padding: 1.25rem 1.25rem;
+      position: relative;
+    }
+
+    /* Info toggle button (ⓘ in top-right corner of each card) */
+    .metric-info-toggle {
+      position: absolute;
+      top: 0.875rem;
+      right: 0.875rem;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--ink-muted);
+      opacity: 0.45;
+      transition: opacity 0.15s ease, color 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .metric-info-toggle:hover { opacity: 1; color: var(--accent); }
+    .metric-info-toggle svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .metric-card.info-open .metric-info-toggle { opacity: 1; color: var(--accent); }
+
+    /* Expandable info panel */
+    .metric-info-panel {
+      margin-top: 0.875rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--card-divider);
+    }
+    .metric-info-row {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+      align-items: baseline;
+    }
+    .metric-info-row:last-child { margin-bottom: 0; }
+    .metric-info-key {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+    }
+    .metric-info-val {
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+      line-height: 1.4;
     }
 
     .metric-card:nth-child(4n) { border-right: none; }
@@ -400,6 +459,7 @@
       font-weight: 500;
       margin-bottom: 0.625rem;
       line-height: 1.35;
+      padding-right: 1.5rem;
     }
 
     .metric-value {
@@ -2335,6 +2395,7 @@
       const sections = HEALTH_DATA.sections;
 
       const [feedbackStatus, setFeedbackStatus] = useState('idle'); // idle | submitting | success | error
+      const [openMetricInfo, setOpenMetricInfo] = useState(null); // tracks which metric's info panel is open
 
       const handleFeedbackSubmit = async function(e) {
         e.preventDefault();
@@ -2421,8 +2482,10 @@
       };
 
       // Render a single metric card
-      const renderMetric = function(metricInfo, sectionId) {
-        const [label, _, metricId] = [metricInfo[0], metricInfo[1], metricInfo[2]];
+      const renderMetric = function(metricInfo, sectionId, sectionSources) {
+        const label = metricInfo[0];
+        const fullName = metricInfo[1];
+        const metricId = metricInfo[2];
         const m = currentData.metrics ? currentData.metrics[metricId] : null;
         
         if (!m) {
@@ -2432,13 +2495,51 @@
             React.createElement('div', { className: 'metric-meta' }, 'Data not yet collected')
           );
         }
-        
-        return React.createElement('div', { key: metricId, className: 'metric-card accent-' + sectionId },
+
+        const infoKey = sectionId + ':' + metricId;
+        const isInfoOpen = openMetricInfo === infoKey;
+
+        // Resolve source name from the section's source IDs (use the first one)
+        let sourceName = null;
+        if (sectionSources && sectionSources.length > 0) {
+          const src = HEALTH_DATA.sources.find(function(s) { return s.id === sectionSources[0]; });
+          if (src) sourceName = src.name;
+        }
+
+        return React.createElement('div', { key: metricId, className: 'metric-card accent-' + sectionId + (isInfoOpen ? ' info-open' : '') },
+          React.createElement('button', {
+            className: 'metric-info-toggle',
+            'aria-label': 'More information about ' + label,
+            onClick: function() { setOpenMetricInfo(isInfoOpen ? null : infoKey); }
+          },
+            React.createElement('svg', { viewBox: '0 0 24 24' },
+              React.createElement('circle', { cx: 12, cy: 12, r: 10 }),
+              React.createElement('line', { x1: 12, y1: 16, x2: 12, y2: 12 }),
+              React.createElement('line', { x1: 12, y1: 8, x2: 12.01, y2: 8 })
+            )
+          ),
           React.createElement('div', { className: 'metric-label' }, label),
           React.createElement('div', { className: 'metric-value' }, m.value + m.unit),
           React.createElement('div', { className: 'metric-meta' },
-            React.createElement('span', { className: 'ci' }, '95% CI: ' + m.low + '–' + m.high),
             React.createElement('span', { className: 'year' }, m.year + ' data')
+          ),
+          isInfoOpen && React.createElement('div', { className: 'metric-info-panel' },
+            fullName && React.createElement('div', { className: 'metric-info-row' },
+              React.createElement('span', { className: 'metric-info-key' }, 'Measure'),
+              React.createElement('span', { className: 'metric-info-val' }, fullName)
+            ),
+            React.createElement('div', { className: 'metric-info-row' },
+              React.createElement('span', { className: 'metric-info-key' }, '95% CI'),
+              React.createElement('span', { className: 'metric-info-val' }, m.low + ' – ' + m.high)
+            ),
+            React.createElement('div', { className: 'metric-info-row' },
+              React.createElement('span', { className: 'metric-info-key' }, 'Year'),
+              React.createElement('span', { className: 'metric-info-val' }, m.year)
+            ),
+            sourceName && React.createElement('div', { className: 'metric-info-row' },
+              React.createElement('span', { className: 'metric-info-key' }, 'Source'),
+              React.createElement('span', { className: 'metric-info-val' }, sourceName)
+            )
           )
         );
       };
@@ -2506,7 +2607,7 @@
                     'CDC PLACES is a county-level dataset. ' + currentData.name + ' data will be added from a separate source (CDC BRFSS state-level data or US national surveys).'
                   )
                 : React.createElement('div', { className: 'metric-grid' },
-                    section.metrics.map(function(m) { return renderMetric(m, section.id); })
+                    section.metrics.map(function(m) { return renderMetric(m, section.id, section.sources); })
                   )
           )
         );
